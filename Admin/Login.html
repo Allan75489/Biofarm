@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - BioSaúde</title>
+
+    <!-- ICONES -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #020617, #0f172a);
+        }
+
+        .login {
+            position: relative;
+            width: 360px;
+        }
+
+        .login::before {
+            content: "";
+            position: absolute;
+            width: 420px;
+            height: 420px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: conic-gradient(#22c55e, #06b6d4, #22c55e);
+            border-radius: 50%;
+            filter: blur(50px);
+            animation: spin 6s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes spin {
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+
+        .card {
+            background: #020617;
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        .card img {
+            width: 75px;
+            margin-bottom: 10px;
+        }
+
+        .card h1 {
+            color: #22c55e;
+            margin-bottom: 25px;
+        }
+
+        .form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .input {
+            position: relative;
+        }
+
+        .input input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: none;
+            background: #0f172a;
+            color: #fff;
+        }
+
+        .input input:focus {
+            outline: 2px solid #22c55e;
+        }
+
+        .toggle {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #94a3b8;
+        }
+
+        .toggle:hover {
+            color: #22c55e;
+        }
+
+        .options {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: #94a3b8;
+        }
+
+        .btn {
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #22c55e, #06b6d4);
+            color: #fff;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn.loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: -300px;
+            width: 260px;
+            padding: 15px;
+            background: #0f172a;
+            border-radius: 10px;
+            display: flex;
+            gap: 10px;
+            transition: 0.4s;
+            color: white;
+        }
+
+        .toast.show {
+            right: 20px;
+        }
+
+        .toast-bar {
+            width: 5px;
+            border-radius: 5px;
+        }
+
+        .success { background: #22c55e; }
+        .error { background: #ef4444; }
+    </style>
+</head>
+
+<body>
+
+    <div class="login">
+
+        <div class="card">
+
+            <img src="../Admin/img/LOGO ADM.png" alt="Logo BioSaúde">
+            <h1>BioSaúde</h1>
+
+            <form class="form" id="form">
+
+                <div class="input">
+                    <input type="text" id="user" placeholder="Usuário" required>
+                </div>
+
+                <div class="input">
+                    <input type="password" id="pass" placeholder="Senha" required>
+                    <i class="fa-solid fa-eye toggle" id="toggle"></i>
+                </div>
+
+                <label class="options">
+                    <input type="checkbox" id="remember">
+                    Lembrar usuário
+                </label>
+
+                <button type="submit" class="btn" id="btn">Entrar</button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+    <!-- TOAST -->
+    <div class="toast" id="toast">
+        <div class="toast-bar" id="bar"></div>
+        <span id="text"></span>
+    </div>
+
+    <script>
+        const form = document.getElementById("form");
+        const btn = document.getElementById("btn");
+        const pass = document.getElementById("pass");
+        const toggle = document.getElementById("toggle");
+
+        const toast = document.getElementById("toast");
+        const text = document.getElementById("text");
+        const bar = document.getElementById("bar");
+
+        const USER = "Alanadmin";
+        const PASSWORD = "Alan@123";
+
+        toggle.onclick = () => {
+            pass.type = pass.type === "password" ? "text" : "password";
+            toggle.classList.toggle("fa-eye");
+            toggle.classList.toggle("fa-eye-slash");
+        };
+
+        function showToast(message, type) {
+            text.innerText = message;
+            bar.className = "toast-bar " + type;
+            toast.classList.add("show");
+
+            setTimeout(() => {
+                toast.classList.remove("show");
+            }, 3000);
+        }
+
+        form.addEventListener("submit", (e) => {
+            e.preventDefault();
+
+            btn.classList.add("loading");
+            btn.innerText = "Entrando...";
+
+            const user = document.getElementById("user").value.trim();
+            const password = pass.value.trim();
+
+            setTimeout(() => {
+
+                if (user === USER && password === PASSWORD) {
+
+                    localStorage.setItem("auth", "true");
+
+                    showToast("Login realizado com sucesso!", "success");
+
+                    setTimeout(() => {
+                        window.location.href = "Dashboard.html";
+                    }, 1000);
+
+                } else {
+                    showToast("Usuário ou senha inválidos", "error");
+
+                    btn.classList.remove("loading");
+                    btn.innerText = "Entrar";
+                }
+
+            }, 800);
+        });
+    </script>
+
+</body>
+</html>
