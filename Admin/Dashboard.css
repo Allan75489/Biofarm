@@ -26,7 +26,8 @@ header {
     text-align: center;
     color: #fff;
     border-radius: 0 0 15px 15px;
-    box-shadow: 0 0 25px rgba(0, 0, 0, 0.6); /* brilho no header */
+    box-shadow: 0 0 25px rgba(0, 0, 0, 0.6);
+    /* brilho no header */
 }
 
 header h1 {
@@ -53,7 +54,8 @@ header h1 {
     padding: 30px 20px;
     border-radius: 15px;
     border: 2px solid #1e293b;
-    box-shadow: 0 0 20px rgba(34,197,94,0.4); /* brilho verde */
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.4);
+    /* brilho verde */
 }
 
 .sidebar h2 {
@@ -114,13 +116,14 @@ header h1 {
     padding: 25px 20px;
     border-radius: 15px;
     border: 2px solid #1e293b;
-    box-shadow: 0 0 15px rgba(34,197,94,0.4); /* brilho verde */
+    box-shadow: 0 0 15px rgba(34, 197, 94, 0.4);
+    /* brilho verde */
     transition: all 0.3s ease;
 }
 
 .card:hover {
     border-color: #22c55e;
-    box-shadow: 0 0 25px rgba(34,197,94,0.6);
+    box-shadow: 0 0 25px rgba(34, 197, 94, 0.6);
 }
 
 .card h3 {
@@ -144,8 +147,10 @@ header h1 {
     border-radius: 10px;
     text-decoration: none;
     color: #94a3b8;
-    border: 2px solid #22c55e;          /* borda verde fixa */
-    box-shadow: 0 0 10px rgba(34,197,94,0.6); /* brilho verde permanente */
+    border: 2px solid #22c55e;
+    /* borda verde fixa */
+    box-shadow: 0 0 10px rgba(34, 197, 94, 0.6);
+    /* brilho verde permanente */
     transition: all 0.3s ease;
 }
 
@@ -167,9 +172,17 @@ header h1 {
         "list list";
 }
 
-.chart-box:nth-child(1) { grid-area: line; }
-.chart-box:nth-child(2) { grid-area: pie; }
-.list-box { grid-area: list; }
+.chart-box:nth-child(1) {
+    grid-area: line;
+}
+
+.chart-box:nth-child(2) {
+    grid-area: pie;
+}
+
+.list-box {
+    grid-area: list;
+}
 
 /* ==========================
    BOXES DE GRÁFICOS E LISTA
@@ -180,14 +193,15 @@ header h1 {
     padding: 25px 20px;
     border-radius: 15px;
     border: 2px solid #1e293b;
-    box-shadow: 0 0 15px rgba(6,182,212,0.4); /* brilho azul */
+    box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+    /* brilho azul */
     transition: all 0.3s ease;
 }
 
 .chart-box:hover,
 .list-box:hover {
     border-color: #06b6d4;
-    box-shadow: 0 0 25px rgba(6,182,212,0.6);
+    box-shadow: 0 0 25px rgba(6, 182, 212, 0.6);
 }
 
 /* ==========================
@@ -249,20 +263,212 @@ canvas {
     display: block;
 }
 
-.chart-box:first-child canvas { height: 400px !important; }
-.chart-box:nth-child(2) canvas { height: 300px !important; }
+.chart-box:first-child canvas {
+    height: 400px !important;
+}
+
+.chart-box:nth-child(2) canvas {
+    height: 300px !important;
+}
 
 /* ==========================
    RESPONSIVO
 ========================== */
 @media (max-width: 768px) {
-    .container { flex-direction: column; }
-    .sidebar { width: 100%; border-right: none; border-bottom: 1px solid #1e293b; }
+    .container {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #1e293b;
+    }
+
     .grid {
         grid-template-columns: 1fr;
         grid-template-areas:
             "line"
             "pie"
             "list";
+    }
+}
+
+/* =========================
+   VENDAS - ORGANIZAÇÃO
+========================= */
+
+main {
+    padding: 30px;
+    width: 100%;
+}
+
+/* =========================
+   FILTROS
+========================= */
+
+.filtro-vendas {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 25px;
+    flex-wrap: wrap;
+}
+
+.filtro-vendas input,
+.filtro-vendas select {
+    padding: 10px 14px;
+    min-width: 180px;
+    background: #0f1b2d;
+    border: 1px solid #1e293b;
+    color: #e2e8f0;
+    border-radius: 8px;
+    outline: none;
+    font-size: 14px;
+}
+
+.filtro-vendas input:focus,
+.filtro-vendas select:focus {
+    border-color: #22c55e;
+}
+
+/* =========================
+   BOTÕES PADRÃO
+========================= */
+
+.filtro-vendas button,
+#finalizar-vendas {
+    padding: 10px 16px;
+    background: #16a34a;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: 0.2s ease;
+}
+
+.filtro-vendas button:hover,
+#finalizar-vendas:hover {
+    background: #22c55e;
+}
+
+/* =========================
+   TABELA
+========================= */
+
+.lista-vendas {
+    overflow-x: auto;
+}
+
+.lista-vendas table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #0b1627;
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: 14px;
+}
+
+.lista-vendas th {
+    background: #111c2e;
+    padding: 16px;
+    color: #22c55e;
+    font-weight: 600;
+    text-align: center;
+}
+
+.lista-vendas td {
+    padding: 16px;
+    text-align: center;
+    border-top: 1px solid #1e293b;
+}
+
+.lista-vendas tr:hover {
+    background: #0f1b2d;
+}
+
+/* =========================
+   BOTÕES DA TABELA
+========================= */
+
+.btn-editar,
+.btn-excluir {
+    padding: 6px 12px;
+    border: none;
+    color: white;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.btn-editar {
+    background: #2563eb;
+    margin-right: 6px;
+}
+
+.btn-excluir {
+    background: #dc2626;
+}
+
+/* =========================
+   GRÁFICO
+========================= */
+
+.grafico-vendas {
+    margin-top: 35px;
+    background: #0b1627;
+    padding: 25px;
+    border-radius: 12px;
+}
+
+.grafico-vendas h2 {
+    margin-bottom: 20px;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+#graficoProdutos {
+    width: 100% !important;
+    height: 320px !important;
+}
+
+/* =========================
+   TOTAL
+========================= */
+
+.total-vendas {
+    margin-top: 35px;
+    padding: 20px;
+    background: #0b1627;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.total-vendas h2 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* =========================
+   RESPONSIVIDADE
+========================= */
+
+@media (max-width: 768px) {
+    .filtro-vendas {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .total-vendas {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    #graficoProdutos {
+        height: 250px !important;
     }
 }
