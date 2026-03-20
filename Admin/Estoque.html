@@ -3,244 +3,262 @@
 
 <head>
     <meta charset="UTF-8">
+
+    <!-- RESPONSIVO -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- SEO -->
+    <meta name="description" content="Sistema de controle de estoque da BioSaúde">
+
     <title>BioSaúde - Estoque</title>
-    <style>
-        body {
-            background: #0f172a;
-            color: #e2e8f0;
-            font-family: "Segoe UI", Arial, sans-serif;
-            padding: 20px;
-        }
 
-        h1 {
-            color: #22c55e;
-            margin-bottom: 20px;
-        }
+    <!-- FAVICON -->
+    <link rel="icon" href="logo.png">
 
-        .filtro {
-            margin-bottom: 10px;
-        }
-
-        input[type="text"] {
-            padding: 5px;
-            width: 250px;
-            border-radius: 4px;
-            border: none;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
-
-        th,
-        td {
-            padding: 10px;
-            text-align: left;
-        }
-
-        th {
-            background: #1e293b;
-        }
-
-        tr:nth-child(even) {
-            background: #111827;
-        }
-
-        tr.low-stock td {
-            background: #dc2626;
-            color: #fff;
-        }
-
-        button {
-            padding: 5px 10px;
-            margin: 2px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .btn-add {
-            background: #22c55e;
-            color: #fff;
-        }
-
-        .btn-edit {
-            background: #3b82f6;
-            color: #fff;
-        }
-
-        .btn-delete {
-            background: #ef4444;
-            color: #fff;
-        }
-
-        .pagination {
-            margin-top: 10px;
-            text-align: center;
-        }
-
-        .pagination button {
-            background: #3b82f6;
-            color: #fff;
-        }
-    </style>
+    <!-- CSS -->
+    <link rel="stylesheet" href="Dashboard.css">
 </head>
 
 <body>
 
-    <h1>Estoque BioSaúde</h1>
+    <!-- CONTAINER GERAL -->
+    <div class="container">
 
-    <div class="filtro">
-        <input type="text" id="pesquisarProduto" placeholder="Pesquisar produto...">
-        <button class="btn-add" id="adicionarProdutoBtn">Adicionar Produto</button>
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <h2>💊 BioSaúde</h2>
+            <ul>
+                <li><a href="Dashboard.html">Dashboard</a></li>
+                <li><a href="Vendas.html">Vendas</a></li>
+                <li><a href="Estoque.html" class="active">Estoque</a></li>
+                <li><a href="Clientes.html">Clientes</a></li>
+                <li><a href="Relatorios.html">Relatórios</a></li>
+                <li><a href="Login.html">Sair</a></li>
+            </ul>
+        </aside>
+
+        <!-- CONTEÚDO -->
+        <main class="conteudo">
+
+            <h1>Estoque BioSaúde</h1>
+
+            <div class="filtro">
+                
+                <!-- ACESSIBILIDADE -->
+                <label for="pesquisarProduto" style="display: none;">
+                    Pesquisar produto
+                </label>
+
+                <input type="text" id="pesquisarProduto" placeholder="Pesquisar produto...">
+                
+                <button class="btn-add" id="adicionarProdutoBtn">
+                    Adicionar Produto
+                </button>
+            </div>
+
+            <table class="tabela-estoque">
+                <thead>
+                    <tr>
+                        <th>Produto</th>
+                        <th>Quantidade</th>
+                        <th>Preço Unitário (R$)</th>
+                        <th>Categoria</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="tabelaCorpo"></tbody>
+            </table>
+
+            <div class="pagination">
+                <button id="prevPage">← Anterior</button>
+                <span id="paginaAtual">1</span>
+                <button id="nextPage">Próxima →</button>
+            </div>
+
+        </main>
+
     </div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
 
-    <table class="tabela-estoque">
-        <thead>
-            <tr>
-                <th>Produto</th>
-                <th>Quantidade</th>
-                <th>Preço Unitário (R$)</th>
-                <th>Categoria</th>
-                <th>Ações</th>
-            </tr>
-        </thead>
-        <tbody id="tabelaCorpo"></tbody>
-    </table>
+    const itensPorPagina = 5;
+    let paginaAtual = 1;
 
-    <div class="pagination">
-        <button id="prevPage">← Anterior</button>
-        <span id="paginaAtual">1</span>
-        <button id="nextPage">Próxima →</button>
-    </div>
+    const tabelaCorpo = document.getElementById("tabelaCorpo");
+    const prevBtn = document.getElementById("prevPage");
+    const nextBtn = document.getElementById("nextPage");
+    const paginaSpan = document.getElementById("paginaAtual");
+    const pesquisarInput = document.getElementById("pesquisarProduto");
 
-    <script>
-        const nomesRemedios = [
-            "Paracetamol 500mg", "Dipirona 1g", "Amoxicilina 500mg", "Ibuprofeno 400mg", "Losartana 50mg",
-            "Vitamina C 500mg", "Cetirizina 10mg", "Omeprazol 20mg", "Ranitidina 150mg", "Fluconazol 150mg",
-            "Metformina 500mg", "Glibenclamida 5mg", "Claritromicina 500mg", "Azitromicina 500mg", "Prednisona 20mg",
-            "Furosemida 40mg", "Hidroclorotiazida 25mg", "Clonazepam 2mg", "Diazepam 5mg", "Lorazepam 2mg",
-            "Salbutamol 100mcg", "Budesonida 200mcg", "Fluticasona 50mcg", "Amoxicilina + Clavulanato", "Captopril 25mg",
-            "Enalapril 10mg", "Losartana + HCTZ", "Simvastatina 20mg", "Atorvastatina 10mg", "Metoprolol 50mg",
-            "Atenolol 50mg", "Alprazolam 0,5mg", "Risperidona 2mg", "Haloperidol 5mg", "Clorpromazina 100mg",
-            "Levotiroxina 50mcg", "Metildopa 250mg", "Carvedilol 25mg", "Omeprazol + Domperidona", "Ranitidina + Simeticona",
-            "Cetoconazol 2%", "Clotrimazol 1%", "Miconazol 2%", "Fluconazol 100mg", "Nistatina 100.000UI",
-            "Vitamina D 1000UI", "Complexo B", "Ácido Fólico 5mg", "Cálcio Carbonato 500mg", "Magnésio 250mg",
-            "Ácido Acetilsalicílico 100mg", "Clopidogrel 75mg", "Enoxaparina 40mg", "Heparina 5.000UI", "Warfarina 5mg",
-            "Prednisolona 5mg", "Metilprednisolona 4mg", "Hidrocortisona 20mg", "Betametasona 4mg", "Dexametasona 4mg",
-            "Insulina NPH 100UI", "Insulina Regular 100UI", "Glargina 100UI", "Lispro 100UI", "Aspart 100UI",
-            "Captopril 50mg", "Enalapril 20mg", "Losartana 100mg", "Valsartana 80mg", "Telmisartana 40mg",
-            "Simvastatina 40mg", "Atorvastatina 20mg", "Rosuvastatina 10mg", "Furosemida 20mg", "Hidroclorotiazida 50mg",
-            "Espironolactona 25mg", "Clonidina 150mcg", "Metildopa 250mg", "Carvedilol 12,5mg", "Propranolol 40mg",
-            "Omeprazol 40mg", "Pantoprazol 40mg", "Esomeprazol 20mg", "Lansoprazol 30mg", "Ranitidina 150mg",
-            "Cetirizina 20mg", "Loratadina 10mg", "Fexofenadina 120mg", "Claritromicina 250mg", "Azitromicina 250mg",
-            "Amoxicilina 250mg", "Nitrofurantoína 100mg", "Sulfametoxazol + Trimetoprim", "Paracetamol 750mg", "Dipirona 500mg",
-            "Vitamina C 1g", "Vitamina D 2000UI", "Ácido Fólico 10mg", "Magnésio + Cálcio", "Complexo B 100mg",
-            "Risperidona 1mg", "Olanzapina 5mg", "Quetiapina 25mg", "Haloperidol 2mg", "Clorpromazina 25mg"
-        ];
+    /* =========================
+       DADOS INICIAIS (100 REMÉDIOS)
+    ========================= */
 
-        const categorias = ["Analgésico", "Antibiótico", "Vitamina", "Antialérgico", "Digestivo"];
-        const produtos = [];
+    const nomes = [
+        "Paracetamol", "Dipirona", "Amoxicilina",
+        "Ibuprofeno", "Losartana",
+        "Vitamina C", "Cetirizina", "Omeprazol"
+    ];
 
-        // Gerar produtos a partir do array de nomes
-        nomesRemedios.forEach((nome, i) => {
-            produtos.push({
-                nome: nome,
-                quantidade: Math.floor(Math.random() * 20), // quantidade aleatória
-                preco: (Math.random() * 20 + 1).toFixed(2).replace(".", ","),
-                categoria: categorias[i % categorias.length]
-            });
+    const dosagens = ["250mg", "500mg", "750mg", "1g"];
+
+    const categorias = [
+        "Analgésico", "Antibiótico", "Vitamina",
+        "Antialérgico", "Digestivo"
+    ];
+
+    let produtos = [];
+
+    for (let i = 0; i < 100; i++) {
+        produtos.push({
+            id: Date.now() + i,
+            nome: `${nomes[i % nomes.length]} ${dosagens[i % dosagens.length]}`, // ✅ sem número
+            quantidade: Math.floor(Math.random() * 50),
+            preco: (Math.random() * 50 + 1).toFixed(2).replace(".", ","),
+            categoria: categorias[i % categorias.length]
         });
+    }
 
-        // Restante do código de paginação, pesquisa e ações permanece igual
-        let paginaAtual = 1;
-        const itensPorPagina = 10;
-        const tabelaCorpo = document.getElementById("tabelaCorpo");
-        const prevBtn = document.getElementById("prevPage");
-        const nextBtn = document.getElementById("nextPage");
-        const paginaSpan = document.getElementById("paginaAtual");
-        const pesquisarInput = document.getElementById("pesquisarProduto");
+    /* =========================
+       RENDER
+    ========================= */
 
-        function renderTabela() {
-            tabelaCorpo.innerHTML = "";
-            const termo = pesquisarInput.value.toLowerCase();
-            const produtosFiltrados = produtos.filter(p => p.nome.toLowerCase().includes(termo));
-            const totalPaginas = Math.ceil(produtosFiltrados.length / itensPorPagina);
-            if (paginaAtual > totalPaginas) paginaAtual = totalPaginas || 1;
-            const inicio = (paginaAtual - 1) * itensPorPagina;
-            const fim = inicio + itensPorPagina;
-            const paginaProdutos = produtosFiltrados.slice(inicio, fim);
+    function renderTabela() {
 
-            paginaProdutos.forEach(prod => {
+        tabelaCorpo.innerHTML = "";
+
+        const termo = pesquisarInput.value.toLowerCase();
+
+        const filtrados = produtos.filter(p =>
+            p.nome.toLowerCase().includes(termo)
+        );
+
+        const totalPaginas = Math.ceil(filtrados.length / itensPorPagina);
+
+        if (paginaAtual > totalPaginas) paginaAtual = totalPaginas || 1;
+
+        const inicio = (paginaAtual - 1) * itensPorPagina;
+
+        filtrados.slice(inicio, inicio + itensPorPagina)
+            .forEach((prod, index) => {
+
+                const numero = inicio + index + 1;
+
                 const tr = document.createElement("tr");
-                if (prod.quantidade < 5) tr.classList.add("low-stock");
+
+                if (prod.quantidade < 5) {
+                    tr.classList.add("low-stock");
+                }
+
                 tr.innerHTML = `
-            <td>${prod.nome}</td>
-            <td>${prod.quantidade}</td>
-            <td>${prod.preco}</td>
-            <td>${prod.categoria}</td>
-            <td>
-                <button class="btn-edit">Editar</button>
-                <button class="btn-delete">Remover</button>
-            </td>
-        `;
+                    <td>${numero}. ${prod.nome}</td>
+                    <td>${prod.quantidade}</td>
+                    <td>R$ ${prod.preco}</td>
+                    <td>${prod.categoria}</td>
+                    <td>
+                        <button class="btn-edit" data-id="${prod.id}">Editar</button>
+                        <button class="btn-delete" data-id="${prod.id}">Remover</button>
+                    </td>
+                `;
+
                 tabelaCorpo.appendChild(tr);
             });
 
-            paginaSpan.textContent = paginaAtual;
-        }
+        paginaSpan.textContent = `${paginaAtual} / ${totalPaginas || 1}`;
+    }
 
+    /* =========================
+       EVENTOS
+    ========================= */
+
+    pesquisarInput.addEventListener("input", () => {
+        paginaAtual = 1;
         renderTabela();
+    });
 
-        // Paginação
-        prevBtn.addEventListener("click", () => {
-            if (paginaAtual > 1) { paginaAtual--; renderTabela(); }
-        });
-        nextBtn.addEventListener("click", () => {
-            const totalPaginas = Math.ceil(produtos.filter(p => p.nome.toLowerCase().includes(pesquisarInput.value.toLowerCase())).length / itensPorPagina);
-            if (paginaAtual < totalPaginas) { paginaAtual++; renderTabela(); }
-        });
+    prevBtn.addEventListener("click", () => {
+        if (paginaAtual > 1) {
+            paginaAtual--;
+            renderTabela();
+        }
+    });
 
-        // Pesquisa
-        pesquisarInput.addEventListener("input", () => { paginaAtual = 1; renderTabela(); });
+    nextBtn.addEventListener("click", () => {
 
-        // Adicionar produto
-        const adicionarBtn = document.getElementById("adicionarProdutoBtn");
-        adicionarBtn.addEventListener("click", () => {
+        const termo = pesquisarInput.value.toLowerCase();
+
+        const totalPaginas = Math.ceil(
+            produtos.filter(p => p.nome.toLowerCase().includes(termo)).length / itensPorPagina
+        );
+
+        if (paginaAtual < totalPaginas) {
+            paginaAtual++;
+            renderTabela();
+        }
+    });
+
+    /* =========================
+       ADICIONAR
+    ========================= */
+
+    document.getElementById("adicionarProdutoBtn")
+        .addEventListener("click", () => {
+
             const nome = prompt("Nome do produto:");
             if (!nome) return;
-            const quantidade = parseInt(prompt("Quantidade:")) || 0;
-            const preco = prompt("Preço unitário (R$):") || "0,00";
-            const categoria = prompt("Categoria:") || categorias[0];
 
-            produtos.push({ nome, quantidade, preco, categoria });
+            const quantidade = parseInt(prompt("Quantidade:")) || 0;
+            const preco = prompt("Preço (R$):") || "0,00";
+            const categoria = prompt("Categoria:") || "Geral";
+
+            produtos.push({
+                id: Date.now(),
+                nome,
+                quantidade,
+                preco,
+                categoria
+            });
+
             renderTabela();
         });
 
-        // Editar / Remover
-        tabelaCorpo.addEventListener("click", e => {
-            const tr = e.target.closest("tr");
-            if (!tr) return;
-            const nomeProduto = tr.children[0].textContent;
-            const produto = produtos.find(p => p.nome === nomeProduto);
+    /* =========================
+       EDITAR / REMOVER
+    ========================= */
 
-            if (e.target.classList.contains("btn-edit")) {
-                const novaQtd = parseInt(prompt("Nova quantidade:", produto.quantidade));
-                if (!isNaN(novaQtd)) produto.quantidade = novaQtd;
+    tabelaCorpo.addEventListener("click", (e) => {
+
+        const id = Number(e.target.dataset.id);
+        const produto = produtos.find(p => p.id === id);
+
+        if (!produto) return;
+
+        if (e.target.classList.contains("btn-edit")) {
+
+            const novaQtd = parseInt(prompt("Nova quantidade:", produto.quantidade));
+
+            if (!isNaN(novaQtd)) {
+                produto.quantidade = novaQtd;
                 renderTabela();
             }
-            if (e.target.classList.contains("btn-delete")) {
-                if (confirm(`Remover ${produto.nome}?`)) {
-                    produtos.splice(produtos.indexOf(produto), 1);
-                    renderTabela();
-                }
-            }
-        });
-    </script>
+        }
 
+        if (e.target.classList.contains("btn-delete")) {
+
+            if (confirm(`Remover ${produto.nome}?`)) {
+                produtos = produtos.filter(p => p.id !== id);
+                renderTabela();
+            }
+        }
+    });
+
+    /* =========================
+       INIT
+    ========================= */
+
+    renderTabela();
+});
+</script>
 </body>
 
 </html>

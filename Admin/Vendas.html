@@ -15,22 +15,29 @@
         <!-- SIDEBAR -->
         <aside class="sidebar">
             <h2>💊 BioSaúde</h2>
-            <ul>
-                <li><a href="Dashboard.html">Dashboard</a></li>
-                <li><a href="Vendas.html" class="active">Vendas</a></li>
-                <li><a href="Estoque.html">Estoque</a></li>
-                <li><a href="Clientes.html">Clientes</a></li>
-                <li><a href="Relatorios.html">Relatórios</a></li>
-                <li><a href="Login.html">Sair</a></li>
-            </ul>
+            <nav>
+                <ul>
+                    <li><a href="Dashboard.html">Dashboard</a></li>
+                    <li><a href="Vendas.html" class="active">Vendas</a></li>
+                    <li><a href="Estoque.html">Estoque</a></li>
+                    <li><a href="Clientes.html">Clientes</a></li>
+                    <li><a href="Relatorios.html">Relatórios</a></li>
+                    <li><a href="Login.html">Sair</a></li>
+                </ul>
+            </nav>
         </aside>
 
         <!-- MAIN -->
         <main>
 
-            <!-- FILTROS DE VENDAS -->
+            <!-- FILTROS -->
             <section class="filtro-vendas">
-                <input type="text" id="pesquisar" placeholder="Pesquisar medicamentos...">
+                <input 
+                    type="text" 
+                    id="pesquisar" 
+                    placeholder="Pesquisar medicamentos..."
+                >
+
                 <button id="btnPesquisar">Buscar</button>
 
                 <select id="filtro-mes">
@@ -52,157 +59,119 @@
                 <button id="limpar-filtro">Limpar Filtro</button>
             </section>
 
-            <!-- LISTA DE VENDAS -->
+            <!-- TABELA DE VENDAS -->
             <section class="lista-vendas">
                 <table>
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Quantidade</th>
+                            <th>Preço</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+
                     <tbody>
 
-                        <tr data-mes="Janeiro">
+                        <tr data-mes="Janeiro" data-nome="Paracetamol 500mg">
                             <td>Paracetamol 500mg</td>
                             <td>10</td>
                             <td>R$ 5,00</td>
                             <td>R$ 50,00</td>
-                            <td>
-                                <button class="btn-editar">Editar</button>
-                                <button class="btn-excluir">Excluir</button>
-                            </td>
                         </tr>
 
-                        <tr data-mes="Fevereiro">
+                        <tr data-mes="Fevereiro" data-nome="Dipirona 1g">
                             <td>Dipirona 1g</td>
                             <td>6</td>
                             <td>R$ 8,00</td>
                             <td>R$ 48,00</td>
-                            <td>
-                                <button class="btn-editar">Editar</button>
-                                <button class="btn-excluir">Excluir</button>
-                            </td>
                         </tr>
 
-                        <tr data-mes="Março">
+                        <tr data-mes="Março" data-nome="Amoxicilina 500mg">
                             <td>Amoxicilina 500mg</td>
                             <td>4</td>
                             <td>R$ 15,00</td>
                             <td>R$ 60,00</td>
-                            <td>
-                                <button class="btn-editar">Editar</button>
-                                <button class="btn-excluir">Excluir</button>
-                            </td>
                         </tr>
 
-                        <tr data-mes="Abril">
+                        <tr data-mes="Abril" data-nome="Ibuprofeno 400mg">
                             <td>Ibuprofeno 400mg</td>
                             <td>7</td>
                             <td>R$ 12,00</td>
                             <td>R$ 84,00</td>
-                            <td>
-                                <button class="btn-editar">Editar</button>
-                                <button class="btn-excluir">Excluir</button>
-                            </td>
                         </tr>
 
-                        <tr data-mes="Maio">
+                        <tr data-mes="Maio" data-nome="Losartana 50mg">
                             <td>Losartana 50mg</td>
                             <td>3</td>
                             <td>R$ 20,00</td>
                             <td>R$ 60,00</td>
-                            <td>
-                                <button class="btn-editar">Editar</button>
-                                <button class="btn-excluir">Excluir</button>
-                            </td>
                         </tr>
 
-                        <tr data-mes="Junho">
+                        <tr data-mes="Junho" data-nome="Vitamina C">
                             <td>Vitamina C</td>
                             <td>12</td>
                             <td>R$ 4,00</td>
                             <td>R$ 48,00</td>
-                            <td>
-                                <button class="btn-editar">Editar</button>
-                                <button class="btn-excluir">Excluir</button>
-                            </td>
                         </tr>
 
-                        <tr data-mes="Julho">
+                        <tr data-mes="Julho" data-nome="Azitromicina 500mg">
                             <td>Azitromicina 500mg</td>
                             <td>5</td>
                             <td>R$ 18,00</td>
                             <td>R$ 90,00</td>
-                            <td>
-                                <button class="btn-editar">Editar</button>
-                                <button class="btn-excluir">Excluir</button>
-                            </td>
                         </tr>
 
-                        <tr data-mes="Agosto">
+                        <tr data-mes="Agosto" data-nome="Omeprazol 20mg">
                             <td>Omeprazol 20mg</td>
                             <td>8</td>
                             <td>R$ 6,00</td>
                             <td>R$ 48,00</td>
-                            <td>
-                                <button class="btn-editar">Editar</button>
-                                <button class="btn-excluir">Excluir</button>
-                            </td>
                         </tr>
 
-                        <tr data-mes="Setembro">
-                            <td>Antialérgico Loratadina</td>
+                        <tr data-mes="Setembro" data-nome="Loratadina">
+                            <td>Loratadina</td>
                             <td>9</td>
                             <td>R$ 7,00</td>
                             <td>R$ 63,00</td>
-                            <td>
-                                <button class="btn-editar">Editar</button>
-                                <button class="btn-excluir">Excluir</button>
-                            </td>
                         </tr>
 
-                        <tr data-mes="Outubro">
+                        <tr data-mes="Outubro" data-nome="Insulina Regular">
                             <td>Insulina Regular</td>
                             <td>2</td>
                             <td>R$ 35,00</td>
                             <td>R$ 70,00</td>
-                            <td>
-                                <button class="btn-editar">Editar</button>
-                                <button class="btn-excluir">Excluir</button>
-                            </td>
                         </tr>
 
-                        <tr data-mes="Novembro">
+                        <tr data-mes="Novembro" data-nome="Álcool 70%">
                             <td>Álcool 70%</td>
                             <td>15</td>
                             <td>R$ 3,00</td>
                             <td>R$ 45,00</td>
-                            <td>
-                                <button class="btn-editar">Editar</button>
-                                <button class="btn-excluir">Excluir</button>
-                            </td>
                         </tr>
 
-                        <tr data-mes="Dezembro">
+                        <tr data-mes="Dezembro" data-nome="Termômetro Digital">
                             <td>Termômetro Digital</td>
                             <td>4</td>
                             <td>R$ 25,00</td>
                             <td>R$ 100,00</td>
-                            <td>
-                                <button class="btn-editar">Editar</button>
-                                <button class="btn-excluir">Excluir</button>
-                            </td>
                         </tr>
 
                     </tbody>
                 </table>
             </section>
 
-            <!-- GRÁFICO DE PRODUTOS MAIS VENDIDOS -->
+            <!-- PAGINAÇÃO -->
+            <section class="paginacao">
+                <button id="anterior">⬅ Anterior</button>
+                <span id="pagina-info">Página 1</span>
+                <button id="proximo">Próximo ➡</button>
+            </section>
+
+            <!-- GRÁFICO -->
             <section class="grafico-vendas">
                 <h2>Produtos Mais Vendidos</h2>
                 <canvas id="graficoProdutos"></canvas>
-            </section>
-
-            <!-- TOTAL DE VENDAS -->
-            <section class="total-vendas">
-                <h2>Total de vendas: R$ <span id="total">0,00</span></h2>
-                <button id="finalizar-vendas">Finalizar Vendas</button>
             </section>
 
         </main>
@@ -214,10 +183,8 @@
         <p>© 2026 BioSaúde. Todos os direitos reservados.</p>
     </footer>
 
-    <!-- Chart.js -->
+    <!-- SCRIPTS -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-    <!-- Seu JS -->
     <script src="Dashboard.js"></script>
 
 </body>

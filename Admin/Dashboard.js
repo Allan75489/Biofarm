@@ -25,8 +25,8 @@ document.addEventListener("DOMContentLoaded", function () {
             mes: [120, 90, 150, 200, 180, 220, 300]
         };
 
-        const labelsDia = ['8h','9h','10h','11h','12h','13h','14h','15h'];
-        const labelsMes = ['Sem 1','Sem 2','Sem 3','Sem 4','Extra','Promo','Final'];
+        const labelsDia = ['8h', '9h', '10h', '11h', '12h', '13h', '14h', '15h'];
+        const labelsMes = ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4', 'Extra', 'Promo', 'Final'];
 
         let tipoAtual = 'dia';
 
@@ -73,54 +73,19 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     /* =========================
-       FUNÇÃO GERAR DADOS
-    ========================= */
-
-    function gerarDados() {
-
-        let produtosQtd = {};
-        let total = 0;
-
-        tabela.querySelectorAll("tr").forEach(tr => {
-
-            if (tr.style.display !== "none") {
-
-                const produto = tr.children[0].textContent;
-                const quantidade = parseInt(tr.children[1].textContent);
-                const valorTexto = tr.children[3].textContent
-                    .replace("R$ ", "")
-                    .replace(",", ".");
-
-                const valor = parseFloat(valorTexto);
-
-                total += valor;
-                produtosQtd[produto] = (produtosQtd[produto] || 0) + quantidade;
-            }
-        });
-
-        return { produtosQtd, total };
-    }
-
-    /* =========================
-       GRÁFICO PIZZA (QUANTIDADE + %)
+       GRÁFICO PIZZA
     ========================= */
 
     const ctxPizza = document.getElementById("graficoPizza");
 
     if (ctxPizza) {
-
-        const dadosIniciais = gerarDados();
-
         pizzaChart = new Chart(ctxPizza, {
-            type: 'doughnut',
+            type: 'pie',
             data: {
-                labels: Object.keys(dadosIniciais.produtosQtd),
+                labels: ['Paracetamol', 'Ibuprofeno', 'Dipirona', 'Amoxicilina', 'Vitamina C'],
                 datasets: [{
-                    data: Object.values(dadosIniciais.produtosQtd),
-                    backgroundColor: [
-                        '#22c55e','#06b6d4','#3b82f6',
-                        '#14b8a6','#4ade80','#f59e0b','#ef4444'
-                    ]
+                    data: [30, 25, 20, 15, 10],
+                    backgroundColor: ['#22c55e', '#06b6d4', '#3b82f6', '#14b8a6', '#4ade80']
                 }]
             },
             options: {
@@ -129,20 +94,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     legend: {
                         position: 'bottom',
                         labels: { color: '#e2e8f0' }
-                    },
-                    tooltip: {
-                        callbacks: {
-                            label: function(context) {
-
-                                const total = context.dataset.data
-                                    .reduce((a, b) => a + b, 0);
-
-                                const value = context.raw;
-                                const percent = ((value / total) * 100).toFixed(1);
-
-                                return `${context.label}: ${value} vendas (${percent}%)`;
-                            }
-                        }
                     }
                 }
             }
@@ -156,16 +107,19 @@ document.addEventListener("DOMContentLoaded", function () {
     const ctxBarra = document.getElementById("graficoProdutos");
 
     if (ctxBarra) {
-
-        const dadosIniciais = gerarDados();
-
         barraChart = new Chart(ctxBarra, {
             type: "bar",
             data: {
-                labels: Object.keys(dadosIniciais.produtosQtd),
+                labels: [
+                    "Paracetamol 500mg",
+                    "Dipirona 1g",
+                    "Amoxicilina 500mg",
+                    "Ibuprofeno 400mg",
+                    "Losartana 50mg"
+                ],
                 datasets: [{
                     label: "Quantidade Vendida",
-                    data: Object.values(dadosIniciais.produtosQtd),
+                    data: [10, 5, 3, 2, 1],
                     backgroundColor: "#22c55e"
                 }]
             },
@@ -185,8 +139,17 @@ document.addEventListener("DOMContentLoaded", function () {
     ========================= */
 
     function atualizarTotal() {
-        const dados = gerarDados();
-        totalSpan.textContent = dados.total.toFixed(2).replace(".", ",");
+        let total = 0;
+
+        tabela.querySelectorAll("tr").forEach(tr => {
+            const totalTexto = tr.children[3].textContent
+                .replace("R$ ", "")
+                .replace(",", ".");
+
+            total += parseFloat(totalTexto);
+        });
+
+        totalSpan.textContent = total.toFixed(2).replace(".", ",");
     }
 
     atualizarTotal();
@@ -196,39 +159,153 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     /* =========================
-       FILTRO POR MÊS
+       FILTRO POR MÊS (TABELA + GRÁFICOS)
     ========================= */
 
     filtroMes?.addEventListener("change", function () {
 
         const mesSelecionado = this.value;
+        let total = 0;
+        let produtos = {};
+        let produtosQtd = {};
 
         tabela.querySelectorAll("tr").forEach(tr => {
 
             const mes = tr.getAttribute("data-mes");
+            const produto = tr.children[0].textContent;
+            const quantidade = parseInt(tr.children[1].textContent);
+            const valorTexto = tr.children[3].textContent
+                .replace("R$ ", "")
+                .replace(",", ".");
+
+            const valor = parseFloat(valorTexto);
 
             if (mesSelecionado === "" || mes === mesSelecionado) {
+
                 tr.style.display = "";
+                total += valor;
+
+                produtos[produto] = (produtos[produto] || 0) + valor;
+                produtosQtd[produto] = (produtosQtd[produto] || 0) + quantidade;
+
             } else {
                 tr.style.display = "none";
             }
         });
 
-        const dadosAtualizados = gerarDados();
-
-        atualizarTotal();
+        totalSpan.textContent = total.toFixed(2).replace(".", ",");
 
         if (pizzaChart) {
-            pizzaChart.data.labels = Object.keys(dadosAtualizados.produtosQtd);
-            pizzaChart.data.datasets[0].data = Object.values(dadosAtualizados.produtosQtd);
+            pizzaChart.data.labels = Object.keys(produtos);
+            pizzaChart.data.datasets[0].data = Object.values(produtos);
             pizzaChart.update();
         }
 
         if (barraChart) {
-            barraChart.data.labels = Object.keys(dadosAtualizados.produtosQtd);
-            barraChart.data.datasets[0].data = Object.values(dadosAtualizados.produtosQtd);
+            barraChart.data.labels = Object.keys(produtosQtd);
+            barraChart.data.datasets[0].data = Object.values(produtosQtd);
             barraChart.update();
         }
+
     });
 
 });
+
+// vendas.js - Lógica de vendas, tabela e filtros
+
+// ==========================
+// PAGINAÇÃO DE VENDAS
+// ==========================
+
+const linhas = document.querySelectorAll(".lista-vendas tbody tr");
+
+const itensPorPagina = 4;
+let paginaAtual = 1;
+const totalPaginas = Math.ceil(linhas.length / itensPorPagina);
+
+const btnAnterior = document.getElementById("anterior");
+const btnProximo = document.getElementById("proximo");
+const paginaInfo = document.getElementById("pagina-info");
+
+// Função para mostrar página
+function mostrarPagina(pagina) {
+    const inicio = (pagina - 1) * itensPorPagina;
+    const fim = inicio + itensPorPagina;
+
+    linhas.forEach((linha, index) => {
+        linha.style.display =
+            index >= inicio && index < fim ? "table-row" : "none";
+    });
+
+    paginaInfo.textContent = `Página ${pagina} de ${totalPaginas}`;
+
+    // Desabilitar botões
+    btnAnterior.disabled = pagina === 1;
+    btnProximo.disabled = pagina === totalPaginas;
+}
+
+// Eventos
+btnAnterior.addEventListener("click", () => {
+    if (paginaAtual > 1) {
+        paginaAtual--;
+        mostrarPagina(paginaAtual);
+    }
+});
+
+btnProximo.addEventListener("click", () => {
+    if (paginaAtual < totalPaginas) {
+        paginaAtual++;
+        mostrarPagina(paginaAtual);
+    }
+});
+
+// Inicializar
+mostrarPagina(paginaAtual);
+
+// ==========================
+// PRODUTO MAIS VENDIDO POR MÊS
+// ==========================
+
+const filtroMes = document.getElementById("filtro-mes");
+const topProduto = document.getElementById("top-produto");
+
+// Função para calcular produto mais vendido
+function calcularTopProduto() {
+    const mesSelecionado = filtroMes.value;
+
+    let maiorQtd = 0;
+    let produtoTop = "-";
+
+    linhas.forEach(linha => {
+        const mes = linha.dataset.mes;
+        const nome = linha.dataset.nome;
+        const qtd = parseInt(linha.children[1].textContent);
+
+        // Se não tiver filtro, pega geral
+        if (mesSelecionado === "" || mes === mesSelecionado) {
+            if (qtd > maiorQtd) {
+                maiorQtd = qtd;
+                produtoTop = nome;
+            }
+        }
+    });
+
+    if (produtoTop === "-") {
+        topProduto.textContent = "Produto mais vendido: -";
+    } else {
+        topProduto.textContent = `Produto mais vendido: ${produtoTop} (${maiorQtd})`;
+    }
+}
+
+// Evento ao mudar mês
+filtroMes.addEventListener("change", () => {
+    calcularTopProduto();
+});
+
+// Inicializar ao carregar
+calcularTopProduto();
+
+
+// Estoque.js - Lógica de estoque, tabela e filtros
+
+
