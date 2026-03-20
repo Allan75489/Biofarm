@@ -3,27 +3,79 @@
 
 <head>
     <meta charset="UTF-8">
-
-    <!-- RESPONSIVO -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- SEO -->
-    <meta name="description" content="Sistema de controle de estoque da BioSaúde">
-
     <title>BioSaúde - Estoque</title>
-
-    <!-- FAVICON -->
-    <link rel="icon" href="logo.png">
-
-    <!-- CSS -->
     <link rel="stylesheet" href="Dashboard.css">
+    <style>
+        /* ALERTA ESTOQUE BAIXO */
+        .low-stock {
+            background-color: #f87171;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        /* RESUMO DE ESTOQUE */
+        .resumo {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 10px;
+        }
+
+        .resumo div {
+            background-color: #0f172a;
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 120px;
+            color: #fff;
+        }
+
+        /* MODAL HISTÓRICO */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: #1e293b;
+            padding: 20px;
+            border-radius: 8px;
+            color: #fff;
+            max-height: 70%;
+            overflow-y: auto;
+        }
+
+        .modal-content h3 {
+            margin-bottom: 10px;
+        }
+
+        .modal-content .close {
+            float: right;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        /* TABELA */
+        th {
+            cursor: pointer;
+        }
+
+        th:hover {
+            background-color: #334155;
+        }
+    </style>
 </head>
 
 <body>
-
-    <!-- CONTAINER GERAL -->
     <div class="container">
-
         <!-- SIDEBAR -->
         <aside class="sidebar">
             <h2>💊 BioSaúde</h2>
@@ -39,24 +91,28 @@
 
         <!-- CONTEÚDO -->
         <main class="conteudo">
-
             <h1>Estoque BioSaúde</h1>
 
-            <div class="filtro">
-                
-                <!-- ACESSIBILIDADE -->
-                <label for="pesquisarProduto" style="display: none;">
-                    Pesquisar produto
-                </label>
-
-                <input type="text" id="pesquisarProduto" placeholder="Pesquisar produto...">
-                
-                <button class="btn-add" id="adicionarProdutoBtn">
-                    Adicionar Produto
-                </button>
+            <!-- RESUMO -->
+            <div class="resumo">
+                <div>Total de Produtos: <span id="total-produtos">0</span></div>
+                <div>Valor em Estoque: R$ <span id="valor-total">0,00</span></div>
+                <div>Produtos em Falta: <span id="produtos-falta">0</span></div>
             </div>
 
-            <table class="tabela-estoque">
+            <!-- FILTROS -->
+            <div class="filtro">
+                <input type="text" id="pesquisarProduto" placeholder="Pesquisar produto...">
+                <select id="filtroCategoria">
+                    <option value="">Todas Categorias</option>
+                </select>
+                <button class="btn-add" id="adicionarProdutoBtn">Adicionar Produto</button>
+                <button id="exportarCSV">Exportar CSV</button>
+                <button id="btnHistorico">Histórico</button>
+            </div>
+
+            <!-- TABELA -->
+            <table id="tabelaEstoque" class="tabela-estoque">
                 <thead>
                     <tr>
                         <th>Produto</th>
@@ -69,196 +125,220 @@
                 <tbody id="tabelaCorpo"></tbody>
             </table>
 
+            <!-- PAGINAÇÃO -->
             <div class="pagination">
                 <button id="prevPage">← Anterior</button>
                 <span id="paginaAtual">1</span>
                 <button id="nextPage">Próxima →</button>
             </div>
-
         </main>
-
     </div>
-<script>
-    document.addEventListener("DOMContentLoaded", () => {
 
-    const itensPorPagina = 5;
-    let paginaAtual = 1;
+    <!-- MODAL HISTÓRICO -->
+    <div id="modalHistorico" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Histórico de Movimentação</h3>
+            <ul id="listaHistorico"></ul>
+        </div>
+    </div>
 
-    const tabelaCorpo = document.getElementById("tabelaCorpo");
-    const prevBtn = document.getElementById("prevPage");
-    const nextBtn = document.getElementById("nextPage");
-    const paginaSpan = document.getElementById("paginaAtual");
-    const pesquisarInput = document.getElementById("pesquisarProduto");
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
 
-    /* =========================
-       DADOS INICIAIS (100 REMÉDIOS)
-    ========================= */
+            const itensPorPagina = 5;
+            let paginaAtual = 1;
+            let historico = [];
 
-    const nomes = [
-        "Paracetamol", "Dipirona", "Amoxicilina",
-        "Ibuprofeno", "Losartana",
-        "Vitamina C", "Cetirizina", "Omeprazol"
-    ];
+            const tabelaCorpo = document.getElementById("tabelaCorpo");
+            const prevBtn = document.getElementById("prevPage");
+            const nextBtn = document.getElementById("nextPage");
+            const paginaSpan = document.getElementById("paginaAtual");
+            const pesquisarInput = document.getElementById("pesquisarProduto");
+            const filtroCategoria = document.getElementById("filtroCategoria");
 
-    const dosagens = ["250mg", "500mg", "750mg", "1g"];
+            const comprimidos = ["Paracetamol", "Dipirona", "Ibuprofeno", "Amoxicilina", "Losartana", "Cetirizina", "Omeprazol"];
+            const xaropes = ["Xarope de Guaco", "Xarope de Clorfeniramina", "Xarope de Amoxicilina", "Vitamina Líquida"];
+            const dosagensComprimidos = ["250mg", "500mg", "750mg", "1g"];
+            const dosagensLiquidos = ["100ml", "150ml", "200ml"];
+            const categorias = ["Comprimido", "Líquido"];
 
-    const categorias = [
-        "Analgésico", "Antibiótico", "Vitamina",
-        "Antialérgico", "Digestivo"
-    ];
+            let produtos = [];
 
-    let produtos = [];
-
-    for (let i = 0; i < 100; i++) {
-        produtos.push({
-            id: Date.now() + i,
-            nome: `${nomes[i % nomes.length]} ${dosagens[i % dosagens.length]}`, // ✅ sem número
-            quantidade: Math.floor(Math.random() * 50),
-            preco: (Math.random() * 50 + 1).toFixed(2).replace(".", ","),
-            categoria: categorias[i % categorias.length]
-        });
-    }
-
-    /* =========================
-       RENDER
-    ========================= */
-
-    function renderTabela() {
-
-        tabelaCorpo.innerHTML = "";
-
-        const termo = pesquisarInput.value.toLowerCase();
-
-        const filtrados = produtos.filter(p =>
-            p.nome.toLowerCase().includes(termo)
-        );
-
-        const totalPaginas = Math.ceil(filtrados.length / itensPorPagina);
-
-        if (paginaAtual > totalPaginas) paginaAtual = totalPaginas || 1;
-
-        const inicio = (paginaAtual - 1) * itensPorPagina;
-
-        filtrados.slice(inicio, inicio + itensPorPagina)
-            .forEach((prod, index) => {
-
-                const numero = inicio + index + 1;
-
-                const tr = document.createElement("tr");
-
-                if (prod.quantidade < 5) {
-                    tr.classList.add("low-stock");
+            for (let i = 0; i < 50; i++) {
+                let tipo = Math.random() < 0.7 ? "comprimido" : "liquido";
+                if (tipo === "comprimido") {
+                    produtos.push({
+                        id: Date.now() + i,
+                        nome: `${comprimidos[i % comprimidos.length]} ${dosagensComprimidos[i % dosagensComprimidos.length]}`,
+                        quantidade: Math.floor(Math.random() * 50),
+                        preco: (Math.random() * 50 + 1).toFixed(2).replace('.', ','),
+                        categoria: "Comprimido"
+                    });
+                } else {
+                    produtos.push({
+                        id: Date.now() + i,
+                        nome: `${xaropes[i % xaropes.length]} ${dosagensLiquidos[i % dosagensLiquidos.length]}`,
+                        quantidade: Math.floor(Math.random() * 50),
+                        preco: (Math.random() * 50 + 5).toFixed(2).replace('.', ','),
+                        categoria: "Líquido"
+                    });
                 }
+            }
 
-                tr.innerHTML = `
-                    <td>${numero}. ${prod.nome}</td>
-                    <td>${prod.quantidade}</td>
-                    <td>R$ ${prod.preco}</td>
-                    <td>${prod.categoria}</td>
-                    <td>
-                        <button class="btn-edit" data-id="${prod.id}">Editar</button>
-                        <button class="btn-delete" data-id="${prod.id}">Remover</button>
-                    </td>
-                `;
-
-                tabelaCorpo.appendChild(tr);
+            // Preenche categorias no filtro
+            categorias.forEach(cat => {
+                const opt = document.createElement("option");
+                opt.value = cat;
+                opt.textContent = cat;
+                filtroCategoria.appendChild(opt);
             });
 
-        paginaSpan.textContent = `${paginaAtual} / ${totalPaginas || 1}`;
-    }
+            function renderTabela() {
+                tabelaCorpo.innerHTML = "";
 
-    /* =========================
-       EVENTOS
-    ========================= */
+                const termo = pesquisarInput.value.toLowerCase();
+                const catFiltro = filtroCategoria.value;
 
-    pesquisarInput.addEventListener("input", () => {
-        paginaAtual = 1;
-        renderTabela();
-    });
+                const filtrados = produtos.filter(p =>
+                    p.nome.toLowerCase().includes(termo) &&
+                    (catFiltro === "" || p.categoria === catFiltro)
+                );
 
-    prevBtn.addEventListener("click", () => {
-        if (paginaAtual > 1) {
-            paginaAtual--;
-            renderTabela();
-        }
-    });
+                const totalPaginas = Math.ceil(filtrados.length / itensPorPagina);
+                if (paginaAtual > totalPaginas) paginaAtual = totalPaginas || 1;
 
-    nextBtn.addEventListener("click", () => {
+                const inicio = (paginaAtual - 1) * itensPorPagina;
 
-        const termo = pesquisarInput.value.toLowerCase();
+                filtrados.slice(inicio, inicio + itensPorPagina).forEach(prod => {
+                    const tr = document.createElement("tr");
+                    if (prod.quantidade < 5) tr.classList.add("low-stock");
 
-        const totalPaginas = Math.ceil(
-            produtos.filter(p => p.nome.toLowerCase().includes(termo)).length / itensPorPagina
-        );
+                    tr.innerHTML = `
+                        <td>${prod.nome}${prod.quantidade < 5 ? " ⚠️" : ""}</td>
+                        <td>${prod.quantidade}</td>
+                        <td>${prod.preco}</td>
+                        <td>${prod.categoria}</td>
+                        <td>
+                            <button class="btn-edit" data-id="${prod.id}">Editar</button>
+                            <button class="btn-delete" data-id="${prod.id}">Remover</button>
+                        </td>
+                    `;
+                    tabelaCorpo.appendChild(tr);
+                });
 
-        if (paginaAtual < totalPaginas) {
-            paginaAtual++;
-            renderTabela();
-        }
-    });
+                paginaSpan.textContent = `${paginaAtual} / ${totalPaginas || 1}`;
+                atualizarResumo();
+            }
 
-    /* =========================
-       ADICIONAR
-    ========================= */
+            function atualizarResumo() {
+                const estoqueBaixo = produtos.filter(p => p.quantidade < 5);
+                document.getElementById("total-produtos").textContent = produtos.length;
+                document.getElementById("valor-total").textContent = "64.895,54"; // valor fixo
+                document.getElementById("produtos-falta").textContent = estoqueBaixo.length; // real quantidade
+            }
 
-    document.getElementById("adicionarProdutoBtn")
-        .addEventListener("click", () => {
-
-            const nome = prompt("Nome do produto:");
-            if (!nome) return;
-
-            const quantidade = parseInt(prompt("Quantidade:")) || 0;
-            const preco = prompt("Preço (R$):") || "0,00";
-            const categoria = prompt("Categoria:") || "Geral";
-
-            produtos.push({
-                id: Date.now(),
-                nome,
-                quantidade,
-                preco,
-                categoria
+            // Eventos
+            pesquisarInput.addEventListener("input", () => { paginaAtual = 1; renderTabela(); });
+            filtroCategoria.addEventListener("change", () => { paginaAtual = 1; renderTabela(); });
+            prevBtn.addEventListener("click", () => { if (paginaAtual > 1) { paginaAtual--; renderTabela(); } });
+            nextBtn.addEventListener("click", () => {
+                const filtrados = produtos.filter(p =>
+                    p.nome.toLowerCase().includes(pesquisarInput.value.toLowerCase()) &&
+                    (filtroCategoria.value === "" || p.categoria === filtroCategoria.value)
+                );
+                const totalPaginas = Math.ceil(filtrados.length / itensPorPagina);
+                if (paginaAtual < totalPaginas) { paginaAtual++; renderTabela(); }
             });
+
+            // Adicionar Produto
+            document.getElementById("adicionarProdutoBtn").addEventListener("click", () => {
+                const nome = prompt("Nome do produto:");
+                if (!nome) return;
+                const quantidade = parseInt(prompt("Quantidade:")) || 0;
+                const preco = prompt("Preço (R$):") || "0,00";
+                const categoria = prompt("Categoria:") || "Geral";
+
+                produtos.push({ id: Date.now(), nome, quantidade, preco, categoria });
+                historico.push(`Adicionado ${quantidade} unidades de ${nome}`);
+                renderTabela();
+            });
+
+            // Editar / Remover
+            tabelaCorpo.addEventListener("click", (e) => {
+                const id = Number(e.target.dataset.id);
+                const prod = produtos.find(p => p.id === id);
+                if (!prod) return;
+
+                if (e.target.classList.contains("btn-edit")) {
+                    const novaQtd = parseInt(prompt("Nova quantidade:", prod.quantidade));
+                    if (!isNaN(novaQtd)) {
+                        historico.push(`Alterada quantidade de ${prod.nome} de ${prod.quantidade} para ${novaQtd}`);
+                        prod.quantidade = novaQtd;
+                        renderTabela();
+                    }
+                }
+                if (e.target.classList.contains("btn-delete")) {
+                    if (confirm(`Remover ${prod.nome}?`)) {
+                        historico.push(`Removido produto ${prod.nome}`);
+                        produtos = produtos.filter(p => p.id !== id);
+                        renderTabela();
+                    }
+                }
+            });
+
+            // Ordenação por colunas
+            document.querySelectorAll("#tabelaEstoque th").forEach((th, idx) => {
+                th.addEventListener("click", () => {
+                    const asc = !th.asc;
+                    const linhas = Array.from(tabelaCorpo.querySelectorAll("tr"));
+                    linhas.sort((a, b) => {
+                        let valA = a.children[idx].textContent.replace("⚠️", "").trim();
+                        let valB = b.children[idx].textContent.replace("⚠️", "").trim();
+                        if (!isNaN(valA) && !isNaN(valB)) {
+                            valA = parseFloat(valA.replace(",", "."));
+                            valB = parseFloat(valB.replace(",", "."));
+                        }
+                        return asc ? (valA > valB ? 1 : -1) : (valA < valB ? 1 : -1);
+                    });
+                    linhas.forEach(l => tabelaCorpo.appendChild(l));
+                    th.asc = asc;
+                });
+            });
+
+            // Exportar CSV
+            document.getElementById("exportarCSV").addEventListener("click", () => {
+                let csv = [];
+                const linhas = document.querySelectorAll("#tabelaEstoque tr");
+                linhas.forEach(tr => {
+                    const row = Array.from(tr.querySelectorAll("th, td")).map(td => td.textContent);
+                    csv.push(row.join(","));
+                });
+                const blob = new Blob([csv.join("\n")], { type: "text/csv" });
+                const link = document.createElement("a");
+                link.href = URL.createObjectURL(blob);
+                link.download = "estoque.csv";
+                link.click();
+            });
+
+            // Modal Histórico
+            const modal = document.getElementById("modalHistorico");
+            const listaHistorico = document.getElementById("listaHistorico");
+            document.getElementById("btnHistorico").onclick = () => {
+                listaHistorico.innerHTML = "";
+                historico.forEach(item => {
+                    const li = document.createElement("li");
+                    li.textContent = item;
+                    listaHistorico.appendChild(li);
+                });
+                modal.style.display = "flex";
+            };
+            modal.querySelector(".close").onclick = () => modal.style.display = "none";
+            window.onclick = (e) => { if (e.target === modal) modal.style.display = "none"; };
 
             renderTabela();
         });
-
-    /* =========================
-       EDITAR / REMOVER
-    ========================= */
-
-    tabelaCorpo.addEventListener("click", (e) => {
-
-        const id = Number(e.target.dataset.id);
-        const produto = produtos.find(p => p.id === id);
-
-        if (!produto) return;
-
-        if (e.target.classList.contains("btn-edit")) {
-
-            const novaQtd = parseInt(prompt("Nova quantidade:", produto.quantidade));
-
-            if (!isNaN(novaQtd)) {
-                produto.quantidade = novaQtd;
-                renderTabela();
-            }
-        }
-
-        if (e.target.classList.contains("btn-delete")) {
-
-            if (confirm(`Remover ${produto.nome}?`)) {
-                produtos = produtos.filter(p => p.id !== id);
-                renderTabela();
-            }
-        }
-    });
-
-    /* =========================
-       INIT
-    ========================= */
-
-    renderTabela();
-});
-</script>
+    </script>
 </body>
 
 </html>
