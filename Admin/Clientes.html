@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioSaúde - Clientes</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial;
+            background: #020617;
+            color: #e2e8f0;
+        }
+
+        .container {
+            display: flex;
+        }
+
+        .sidebar {
+            width: 220px;
+            height: 100vh;
+            background: #020617;
+            padding: 20px;
+        }
+
+        .sidebar h2 {
+            color: #22c55e;
+        }
+
+        .sidebar a {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 10px;
+            color: #94a3b8;
+            text-decoration: none;
+        }
+
+        .sidebar a:hover {
+            border: 1px solid #22c55e;
+            color: #22c55e;
+        }
+
+        .main {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background: #020617;
+            border: 1px solid #1e293b;
+            border-radius: 15px;
+            padding: 20px;
+        }
+
+        input,
+        select {
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            background: #0f172a;
+            border: 1px solid #1e293b;
+            color: white;
+            border-radius: 8px;
+        }
+
+        button {
+            background: #22c55e;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            opacity: 0.8;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            color: #22c55e;
+            text-align: left;
+            padding: 10px;
+        }
+
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #1e293b;
+        }
+
+        tr:hover {
+            background: #0f172a;
+        }
+
+        /* LISTA PAGINADA */
+        .lista-clientes {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .lista-clientes div {
+            background: #0f172a;
+            padding: 8px;
+            border-radius: 8px;
+        }
+
+        .controle {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        #pagina {
+            text-align: center;
+            margin-top: 10px;
+            color: #94a3b8;
+        }
+
+        .pix {
+            color: #22c55e;
+        }
+
+        .cartao {
+            color: #3b82f6;
+        }
+
+        .dinheiro {
+            color: #facc15;
+        }
+
+        .top-bar {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <aside class="sidebar">
+            <h2>💊 BioSaúde</h2>
+            <a href="Dashboard.html">Dashboard</a>
+            <a href="Vendas.html">Vendas</a>
+            <a href="Estoque.html">Estoque</a>
+            <a href="Clientes.html">Clientes</a>
+            <a href="Relatorio.html">Relatórios</a>
+            <a href="Login.html">Sair</a>
+        </aside>
+
+        <main class="main">
+
+            <h1>👤 Clientes (<span id="total">0</span>)</h1>
+
+            <div class="grid">
+
+                <!-- ESQUERDA -->
+                <div>
+
+                    <div class="card">
+                        <div class="top-bar">
+                            <input type="text" id="buscar" placeholder="Buscar cliente...">
+                        </div>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Email</th>
+                                    <th>Contato</th>
+                                    <th>Produto</th>
+                                    <th>Pagamento</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+
+                            <tbody id="tabelaClientes"></tbody>
+                        </table>
+                    </div>
+
+                    <div class="card">
+                        <h3>Novo Cliente</h3>
+
+                        <input id="nome" placeholder="Nome">
+                        <input id="email" placeholder="Email">
+                        <input id="contato" placeholder="Contato">
+                        <input id="produto" placeholder="Produto">
+
+                        <select id="pagamento">
+                            <option>Pix</option>
+                            <option>Cartão</option>
+                            <option>Dinheiro</option>
+                        </select>
+
+                        <button onclick="addCliente()">Adicionar</button>
+                    </div>
+
+                </div>
+
+                <!-- DIREITA -->
+                <div>
+
+                    <div class="card">
+                        <h3>🏆 Melhor Cliente</h3>
+                        <p id="melhor">-</p>
+                    </div>
+
+                    <div class="card">
+                        <h2>Clientes</h2>
+
+                        <div class="controle">
+                            <button onclick="voltar()">⬅️</button>
+                            <button onclick="avancar()">➡️</button>
+                        </div>
+
+                        <div class="lista-clientes" id="listaNomes"></div>
+                        <p id="pagina"></p>
+
+                    </div>
+
+                    <div class="card">
+                        <h2>Pagamentos</h2>
+                        <canvas id="grafico"></canvas>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+
+        let clientes = [
+            { nome: "Ana Luiza", email: "ana@email.com", contato: "(83) 99185-4789", produto: "Dipirona", pagamento: "Pix" },
+            { nome: "João Pedro", email: "joao@email.com", contato: "(83) 95893-1780", produto: "Paracetamol", pagamento: "Cartão" },
+            { nome: "Maria Clara", email: "maria@email.com", contato: "(83) 93333-3333", produto: "Ibuprofeno", pagamento: "Dinheiro" },
+            { nome: "Carlos Eduardo", email: "carlos@email.com", contato: "(83) 94444-4444", produto: "Amoxicilina", pagamento: "Pix" },
+            { nome: "Lucas Gabriel", email: "lucas@email.com", contato: "(83) 95555-5555", produto: "Dipirona", pagamento: "Pix" },
+            { nome: "Fernanda Souza", email: "fernanda@email.com", contato: "(83) 96666-6666", produto: "Paracetamol", pagamento: "Cartão" },
+            { nome: "Bruno Henrique", email: "bruno@email.com", contato: "(83) 97777-7777", produto: "Ibuprofeno", pagamento: "Dinheiro" },
+            { nome: "Juliana Alves", email: "juliana@email.com", contato: "(83) 98888-8888", produto: "Dipirona", pagamento: "Pix" },
+            { nome: "Rafael Costa", email: "rafael@email.com", contato: "(83) 99999-9999", produto: "Amoxicilina", pagamento: "Cartão" },
+        ];
+        let paginaAtual = 0;
+        const porPagina = 6;
+
+        const tabela = document.getElementById("tabelaClientes");
+        const lista = document.getElementById("listaNomes");
+
+        let chart;
+
+        function render() {
+            tabela.innerHTML = "";
+
+            let pix = 0, cartao = 0, dinheiro = 0;
+
+            clientes.forEach((c, i) => {
+                tabela.innerHTML += `
+        <tr>
+            <td>${c.nome}</td>
+            <td>${c.email}</td>
+            <td>${c.contato}</td>
+            <td>${c.produto}</td>
+            <td class="${c.pagamento.toLowerCase()}">${c.pagamento}</td>
+            <td><button onclick="remover(${i})">🗑️</button></td>
+        </tr>
+        `;
+
+                if (c.pagamento === "Pix") pix++;
+                if (c.pagamento === "Cartão") cartao++;
+                if (c.pagamento === "Dinheiro") dinheiro++;
+            });
+
+            renderLista();
+
+            document.getElementById("total").textContent = clientes.length;
+            document.getElementById("melhor").textContent = clientes[0]?.nome || "-";
+
+            atualizarGrafico(pix, cartao, dinheiro);
+        }
+
+        function renderLista() {
+            lista.innerHTML = "";
+
+            let inicio = paginaAtual * porPagina;
+            let fim = inicio + porPagina;
+
+            let pagina = clientes.slice(inicio, fim);
+
+            pagina.forEach(c => {
+                lista.innerHTML += `<div>${c.nome}</div>`;
+            });
+
+            let totalPaginas = Math.ceil(clientes.length / porPagina);
+
+            document.getElementById("pagina").textContent =
+                `Página ${paginaAtual + 1} de ${totalPaginas}`;
+        }
+
+        function avancar() {
+            let totalPaginas = Math.ceil(clientes.length / porPagina);
+
+            if (paginaAtual < totalPaginas - 1) {
+                paginaAtual++;
+                renderLista();
+            }
+        }
+
+        function voltar() {
+            if (paginaAtual > 0) {
+                paginaAtual--;
+                renderLista();
+            }
+        }
+
+        function atualizarGrafico(pix, cartao, dinheiro) {
+            if (chart) chart.destroy();
+
+            chart = new Chart(document.getElementById("grafico"), {
+                type: "pie",
+                data: {
+                    labels: ["Pix", "Cartão", "Dinheiro"],
+                    datasets: [{
+                        data: [pix, cartao, dinheiro],
+                        backgroundColor: ["#22c55e", "#3b82f6", "#facc15"]
+                    }]
+                }
+            });
+        }
+
+        function addCliente() {
+            clientes.push({
+                nome: nome.value,
+                email: email.value,
+                contato: contato.value,
+                produto: produto.value,
+                pagamento: pagamento.value
+            });
+
+            render();
+        }
+
+        function remover(i) {
+            clientes.splice(i, 1);
+            render();
+        }
+
+        render();
+
+    </script>
+
+</body>
+
+</html>
