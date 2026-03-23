@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relatórios - BioSaúde</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+    /* =========================
+   RESET
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* =========================
+   BODY
+========================= */
+body {
+    background: #020617;
+    color: #e2e8f0;
+    display: flex;
+}
+
+/* =========================
+   SIDEBAR
+========================= */
+.sidebar {
+    width: 220px;
+    height: 100vh;
+    background: #020617;
+    padding: 20px;
+    border-right: 1px solid #0f172a;
+}
+
+.sidebar h2 {
+    color: #22c55e;
+    margin-bottom: 30px;
+}
+
+.sidebar a {
+    display: block;
+    padding: 12px;
+    margin-bottom: 10px;
+    color: #94a3b8;
+    text-decoration: none;
+    border-radius: 10px;
+    border: 1px solid #22c55e33;
+    transition: 0.3s;
+}
+
+.sidebar a:hover,
+.sidebar a.active {
+    color: #22c55e;
+    box-shadow: 0 0 10px #22c55e;
+    border: 1px solid #22c55e;
+}
+
+/* =========================
+   MAIN
+========================= */
+.main {
+    flex: 1;
+    padding: 20px;
+}
+
+/* =========================
+   TOPO
+========================= */
+.topo {
+    background: linear-gradient(90deg, #0f172a, #06b6d4);
+    padding: 20px;
+    border-radius: 15px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* =========================
+   FILTROS
+========================= */
+.filtros {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+}
+
+.filtros input,
+.filtros button {
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    outline: none;
+}
+
+.filtros input {
+    background: #020617;
+    color: #e2e8f0;
+    border: 1px solid #22c55e33;
+}
+
+.filtros button {
+    background: #22c55e;
+    color: #020617;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.filtros button:hover {
+    box-shadow: 0 0 10px #22c55e;
+}
+
+/* =========================
+   CARDS
+========================= */
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.card {
+    background: #020617;
+    padding: 20px;
+    border-radius: 12px;
+    border: 1px solid #22c55e33;
+    box-shadow: 0 0 10px #22c55e22;
+    transition: 0.3s;
+}
+
+.card:hover {
+    box-shadow: 0 0 20px #22c55e;
+    transform: translateY(-3px);
+}
+
+.card h3 {
+    color: #94a3b8;
+    font-size: 14px;
+}
+
+.card p {
+    color: #22c55e;
+    font-size: 22px;
+    margin-top: 10px;
+}
+
+/* =========================
+   GRÁFICOS
+========================= */
+.graficos {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    margin-top: 30px;
+}
+
+.box {
+    background: #020617;
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid #22c55e33;
+    box-shadow: 0 0 10px #22c55e22;
+}
+
+.box h3 {
+    margin-bottom: 15px;
+}
+
+/* =========================
+   TABELA
+========================= */
+.tabela {
+    margin-top: 30px;
+    background: #020617;
+    padding: 20px;
+    border-radius: 15px;
+    border: 1px solid #22c55e33;
+    box-shadow: 0 0 10px #22c55e22;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    color: #22c55e;
+    border-bottom: 2px solid #22c55e33;
+}
+
+td {
+    border-bottom: 1px solid #1e293b;
+}
+
+tr:hover {
+    background: #0f172a;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+@media (max-width: 900px) {
+    .cards {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .graficos {
+        grid-template-columns: 1fr;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+    <h2>💊 BioSaúde</h2>
+
+    <a href="Dashboard.html">Dashboard</a>
+    <a href="Vendas.html">Vendas</a>
+    <a href="Estoque.html">Estoque</a>
+    <a href="Clientes.html">Clientes</a>
+    <a href="Relatorio.html" class="active">Relatório</a>
+    <a href="Login.html">Sair</a>
+</aside>
+
+<!-- CONTEÚDO -->
+<main class="main">
+
+    <header class="topo">
+        📊 Relatórios Gerais
+    </header>
+
+    <!-- FILTROS -->
+    <section class="filtros">
+        <input type="date" id="dataInicio">
+        <input type="date" id="dataFim">
+        <button id="btnFiltrar">Filtrar</button>
+    </section>
+
+    <!-- CARDS -->
+    <section class="cards" id="cards"></section>
+
+    <!-- GRÁFICOS -->
+    <section class="graficos">
+        <div class="box">
+            <h3>Vendas</h3>
+            <canvas id="graficoVendas"></canvas>
+        </div>
+
+        <div class="box">
+            <h3>Mais vendidos</h3>
+            <canvas id="graficoProdutos"></canvas>
+        </div>
+    </section>
+
+    <!-- TABELA -->
+    <section class="tabela">
+        <h3>Histórico</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Qtd</th>
+                    <th>Valor</th>
+                    <th>Data</th>
+                </tr>
+            </thead>
+            <tbody id="tabelaBody"></tbody>
+        </table>
+    </section>
+
+</main>
+
+<script>
+    // ==========================
+// SIMULAÇÃO DE API
+// ==========================
+const api = {
+    async buscarRelatorios() {
+        return [
+            { produto: "Dipirona", qtd: 2, valor: 10, data: "2026-03-20" },
+            { produto: "Paracetamol", qtd: 1, valor: 15, data: "2026-03-21" },
+            { produto: "Ibuprofeno", qtd: 3, valor: 30, data: "2026-03-22" }
+        ];
+    }
+};
+
+// ==========================
+// ESTADO GLOBAL
+// ==========================
+let vendas = [];
+
+// ==========================
+// INICIALIZAÇÃO
+// ==========================
+document.addEventListener("DOMContentLoaded", async () => {
+    vendas = await api.buscarRelatorios();
+
+    renderCards();
+    renderTabela(vendas);
+    renderGraficos(vendas);
+});
+
+// ==========================
+// CARDS
+// ==========================
+function renderCards() {
+    const total = vendas.reduce((acc, v) => acc + v.valor, 0);
+    const qtd = vendas.reduce((acc, v) => acc + v.qtd, 0);
+
+    const cards = document.getElementById("cards");
+
+    cards.innerHTML = `
+        <div class="card">
+            <h3>Total</h3>
+            <p>R$ ${total}</p>
+        </div>
+
+        <div class="card">
+            <h3>Itens vendidos</h3>
+            <p>${qtd}</p>
+        </div>
+
+        <div class="card">
+            <h3>Vendas</h3>
+            <p>${vendas.length}</p>
+        </div>
+
+        <div class="card">
+            <h3>Média</h3>
+            <p>R$ ${(total / vendas.length).toFixed(2)}</p>
+        </div>
+    `;
+}
+
+// ==========================
+// TABELA
+// ==========================
+function renderTabela(lista) {
+    const tbody = document.getElementById("tabelaBody");
+
+    tbody.innerHTML = lista.map(v => `
+        <tr>
+            <td>${v.produto}</td>
+            <td>${v.qtd}</td>
+            <td>R$ ${v.valor}</td>
+            <td>${v.data}</td>
+        </tr>
+    `).join("");
+}
+
+// ==========================
+// GRÁFICOS
+// ==========================
+function renderGraficos(lista) {
+
+    const vendasPorDia = {};
+    const produtos = {};
+
+    lista.forEach(v => {
+        vendasPorDia[v.data] = (vendasPorDia[v.data] || 0) + v.valor;
+        produtos[v.produto] = (produtos[v.produto] || 0) + v.qtd;
+    });
+
+    new Chart(document.getElementById("graficoVendas"), {
+        type: "line",
+        data: {
+            labels: Object.keys(vendasPorDia),
+            datasets: [{
+                label: "Vendas",
+                data: Object.values(vendasPorDia)
+            }]
+        }
+    });
+
+    new Chart(document.getElementById("graficoProdutos"), {
+        type: "pie",
+        data: {
+            labels: Object.keys(produtos),
+            datasets: [{
+                data: Object.values(produtos)
+            }]
+        }
+    });
+}
+
+// ==========================
+// FILTRO
+// ==========================
+document.getElementById("btnFiltrar").addEventListener("click", () => {
+    const inicio = document.getElementById("dataInicio").value;
+    const fim = document.getElementById("dataFim").value;
+
+    const filtrado = vendas.filter(v => {
+        return (!inicio || v.data >= inicio) &&
+               (!fim || v.data <= fim);
+    });
+
+    renderTabela(filtrado);
+    renderGraficos(filtrado);
+});
+</script>
+</body>
+</html>
