@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - BioSaúde</title>
+
+<style>
+
+/* RESET */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial;
+}
+
+/* BODY */
+body {
+    height: 100vh;
+    background: linear-gradient(135deg, #020617, #0f172a);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #e2e8f0;
+}
+
+/* CARD */
+.login-box {
+    background: #1e293b;
+    padding: 30px;
+    border-radius: 16px;
+    width: 320px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.login-box h2 {
+    color: #22c55e;
+    margin-bottom: 10px;
+}
+
+.login-box p {
+    font-size: 14px;
+    color: #94a3b8;
+    margin-bottom: 20px;
+}
+
+/* INPUT */
+input {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 12px;
+    border-radius: 10px;
+    border: none;
+    background: #020617;
+    color: #fff;
+}
+
+/* BOTÃO */
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: #22c55e;
+    color: #020617;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #16a34a;
+}
+
+/* ERRO */
+.erro {
+    color: #ef4444;
+    font-size: 13px;
+    margin-top: 10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="login-box">
+    <h2>BioSaúde</h2>
+    <p id="msg">Entre na sua conta</p>
+
+    <input type="text" id="usuario" placeholder="Usuário">
+    <input type="password" id="senha" placeholder="Senha">
+
+    <button onclick="login()">Entrar</button>
+
+    <div class="erro" id="erro"></div>
+</div>
+
+<script>
+
+function login() {
+    const usuario = document.getElementById("usuario").value;
+    const senha = document.getElementById("senha").value;
+    const erro = document.getElementById("erro");
+
+    // LOGIN SIMPLES (tipo admin)
+    const userPadrao = "Allan";
+    const senhaPadrao = "1234";
+
+    if (usuario === userPadrao && senha === senhaPadrao) {
+
+        // salva usuário
+        localStorage.setItem("user_nome", usuario);
+
+        // mensagem de boas-vindas
+        document.getElementById("msg").innerText = `Bem-vindo Allan Gustavo, ${usuario}!`;
+
+        erro.innerText = "";
+
+        // redireciona
+        setTimeout(() => {
+            window.location.href = "minha conta.html";
+        }, 1000);
+
+    } else {
+        erro.innerText = "Usuário ou senha inválidos!";
+    }
+}
+
+</script>
+
+</body>
+</html>
