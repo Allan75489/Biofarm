@@ -1,0 +1,389 @@
+/* =========================
+   RESET
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* =========================
+   BODY
+========================= */
+body {
+    background: #0f172a;
+    color: #e2e8f0;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+    background: #020617;
+    border-bottom: 1px solid #000000;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.logo img {
+    width: 40px;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    gap: 25px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #e2e8f0;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: #38f892;
+}
+
+/* =========================
+   HERO (COM IMAGEM DE FUNDO)
+========================= */
+.hero {
+    height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+
+    background-image: 
+        linear-gradient(rgba(2, 6, 23, 0.8), rgba(15, 23, 42, 0.9)),
+        url('../icons/img/Fundo\ da\ home.jpeg');
+
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.hero-text h1 {
+    font-size: 42px;
+    margin-bottom: 15px;
+}
+
+.hero-text p {
+    max-width: 500px;
+    margin: 0 auto 20px;
+    color: #94a3b8;
+}
+
+/* BOTÃO */
+.btn {
+    display: inline-block;
+    padding: 12px 25px;
+    background: #38f868;
+    color: #020617;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+.btn:hover {
+    background: #0ee97f;
+}
+
+/* =========================
+   PRODUTOS
+========================= */
+.produtos {
+    padding: 60px 40px;
+    text-align: center;
+}
+
+.produtos h2 {
+    margin-bottom: 40px;
+    font-size: 28px;
+}
+
+.cards {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.card {
+    background: #020617;
+    padding: 25px;
+    border-radius: 12px;
+    width: 250px;
+    border: 1px solid #1e293b;
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    border-color: #38f86e;
+}
+
+.card h3 {
+    margin-bottom: 10px;
+}
+
+.card p {
+    color: #94a3b8;
+}
+
+/* =========================
+   CONTATO
+========================= */
+.contato {
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.container {
+    max-width: 600px;
+    margin: auto;
+}
+
+.info-contato {
+    margin-bottom: 20px;
+    color: #94a3b8;
+}
+
+.info-contato a {
+    color: #38f855;
+    text-decoration: none;
+}
+
+/* FORM */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+input,
+textarea {
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    background: #020617;
+    color: #e2e8f0;
+    border: 1px solid #1e293b;
+}
+
+textarea {
+    resize: none;
+    height: 120px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+.footer {
+    background: #020617;
+    text-align: center;
+    padding: 20px;
+    border-top: 1px solid #1e293b;
+}
+
+.footer p {
+    color: #94a3b8;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+@media (max-width: 768px) {
+    .nav-links {
+        display: none;
+    }
+
+    .hero-text h1 {
+        font-size: 28px;
+    }
+
+    .cards {
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+/* =========================
+    MEDICAÇÕES
+========================= */
+
+/* =========================
+   RESET
+========================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* =========================
+   BODY
+========================= */
+body {
+    background: #020617;
+    color: #e2e8f0;
+}
+
+/* =========================
+   NAVBAR
+========================= */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background: #0f172a;
+    border-bottom: 1px solid #1e293b;
+}
+
+.navbar h2 {
+    color: #38f895;
+}
+
+.btn-voltar {
+    text-decoration: none;
+    background: #38f865;
+    color: #020617;
+    padding: 8px 15px;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+.btn-voltar:hover {
+    background: #0ee96d;
+}
+
+/* =========================
+   TOPO
+========================= */
+.topo {
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.topo h1 {
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+}
+
+.topo p {
+    color: #94a3b8;
+}
+
+/* =========================
+   PRODUTOS GRID
+========================= */
+.produtos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 30px;
+}
+
+/* =========================
+   CARD
+========================= */
+.card {
+    background: #0f172a;
+    border: 1px solid #1e293b;
+    border-radius: 15px;
+    padding: 20px;
+    text-align: center;
+    transition: 0.3s;
+}
+
+/* Hover */
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+}
+
+/* =========================
+   IMAGEM
+========================= */
+.card img {
+    width: 100%;
+    height: 140px;
+    object-fit: contain;
+    margin-bottom: 15px;
+}
+
+/* =========================
+   TEXTO
+========================= */
+.card h3 {
+    margin-bottom: 8px;
+    font-size: 1.2rem;
+}
+
+.card p {
+    font-size: 0.9rem;
+    color: #94a3b8;
+    margin-bottom: 10px;
+}
+
+/* =========================
+   PREÇO
+========================= */
+.card span {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #38f882;
+}
+
+/* =========================
+   BOTÃO
+========================= */
+.card .btn {
+    background: #38f858;
+    color: #020617;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.card .btn:hover {
+    background: #0ee95b;
+}
+
+/* =========================
+   FOOTER
+========================= */
+footer {
+    text-align: center;
+    padding: 20px;
+    border-top: 1px solid #1e293b;
+    margin-top: 30px;
+    color: #94a3b8;
+}
+
+/* =========================
+   RESPONSIVO
+========================= */
+@media (max-width: 600px) {
+    .topo h1 {
+        font-size: 2rem;
+    }
+}

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicamentos - BioSaúde</title>
+    <link rel="stylesheet" href="../css/home.css">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <h2>BioSaúde</h2>
+        <a href="Home.html" class="btn-voltar">⬅ Voltar para Home</a>
+    </nav>
+
+    <!-- Título -->
+    <section class="topo">
+        <h1>Medicamentos</h1>
+        <p>Confira nossos produtos disponíveis</p>
+    </section>
+
+    <!-- 🔎 Busca + Filtro -->
+    <section class="filtros">
+        <input type="text" id="buscar" placeholder="Buscar medicamento...">
+
+        <select id="categoria">
+            <option value="">Todas categorias</option>
+            <option value="analgesicos">Analgésicos</option>
+            <option value="vitaminas">Vitaminas</option>
+            <option value="pomadas">Pomadas</option>
+            <option value="higiene">Higiene</option>
+        </select>
+    </section>
+
+    <!-- Produtos -->
+    <section class="produtos">
+
+        <!-- CARD -->
+        <div class="card" data-categoria="analgesicos">
+            <span class="favorito">❤️</span>
+            <img src="../icons/img/medicamentos/analgesicos/paracetamol.png">
+            <h3>Paracetamol</h3>
+            <p>Alívio de dores e febre</p>
+            <span class="preco">R$ 8,00</span>
+            <span class="estoque">Em estoque</span>
+            <button class="btn">Comprar</button>
+        </div>
+
+        <div class="card" data-categoria="analgesicos">
+            <span class="favorito">❤️</span>
+            <img src="../icons/img/medicamentos/analgesicos/dipirona.png">
+            <h3>Dipirona</h3>
+            <p>Analgésico e antitérmico</p>
+            <span class="preco">R$ 6,00</span>
+            <span class="estoque">Em estoque</span>
+            <button class="btn">Comprar</button>
+        </div>
+
+        <div class="card" data-categoria="analgesicos">
+            <span class="favorito">❤️</span>
+            <img src="../icons/img/medicamentos/analgesicos/ibuprofeno 400mg.png">
+            <h3>Ibuprofeno</h3>
+            <p>Anti-inflamatório</p>
+            <span class="preco">R$ 12,00</span>
+            <span class="estoque">Em estoque</span>
+            <button class="btn">Comprar</button>
+        </div>
+
+        <!-- VITAMINAS -->
+        <div class="card" data-categoria="vitaminas">
+            <span class="favorito">❤️</span>
+            <img src="../icons/img/medicamentos/vitaminas/vitamina-c.png">
+            <h3>Vitamina C</h3>
+            <p>Fortalece a imunidade</p>
+            <span class="preco">R$ 25,00</span>
+            <span class="estoque">Em estoque</span>
+            <button class="btn">Comprar</button>
+        </div>
+
+        <div class="card" data-categoria="vitaminas">
+            <span class="favorito">❤️</span>
+            <img src="../icons/img/medicamentos/vitaminas/vitamina-d.png">
+            <h3>Vitamina D</h3>
+            <p>Saúde dos ossos</p>
+            <span class="preco">R$ 30,00</span>
+            <span class="estoque">Em estoque</span>
+            <button class="btn">Comprar</button>
+        </div>
+
+        <!-- POMADAS -->
+        <div class="card" data-categoria="pomadas">
+            <span class="favorito">❤️</span>
+            <img src="../icons/img/medicamentos/pomadas/nebacetin.png">
+            <h3>Nebacetin</h3>
+            <p>Pomada antibiótica</p>
+            <span class="preco">R$ 15,00</span>
+            <span class="estoque">Em estoque</span>
+            <button class="btn">Comprar</button>
+        </div>
+
+        <div class="card" data-categoria="pomadas">
+            <span class="favorito">❤️</span>
+            <img src="../icons/img/medicamentos/pomadas/bepantol.webp">
+            <h3>Bepantol</h3>
+            <p>Hidratação e cicatrização</p>
+            <span class="preco">R$ 18,00</span>
+            <span class="estoque">Em estoque</span>
+            <button class="btn">Comprar</button>
+        </div>
+
+        <!-- HIGIENE -->
+        <div class="card" data-categoria="higiene">
+            <span class="favorito">❤️</span>
+            <img src="../icons/img/medicamentos/higiene/alcool-gel.png">
+            <h3>Álcool Gel</h3>
+            <p>Proteção contra germes</p>
+            <span class="preco">R$ 7,00</span>
+            <span class="estoque">Em estoque</span>
+            <button class="btn">Comprar</button>
+        </div>
+
+        <div class="card" data-categoria="higiene">
+            <span class="favorito">❤️</span>
+            <img src="../icons/img/medicamentos/higiene/sabonete-antisseptico.png">
+            <h3>Sabonete Antisséptico</h3>
+            <p>Higiene completa</p>
+            <span class="preco">R$ 5,00</span>
+            <span class="estoque">Em estoque</span>
+            <button class="btn">Comprar</button>
+        </div>
+
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 BioSaúde</p>
+    </footer>
+
+</body>
+</html>
