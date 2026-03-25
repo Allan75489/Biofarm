@@ -1,138 +1,11 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Perfumaria - BioSaúde</title>
-    <style>
-        /* =========================
-   RESET
-========================= */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Segoe UI", Arial, sans-serif;
-}
-
-/* =========================
-   BODY
-========================= */
-body {
-    background: #0f172a;
-    color: #e2e8f0;
-}
-
-/* =========================
-   NAVBAR
-========================= */
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 30px;
-    background: #020617;
-    border-bottom: 1px solid #1e293b;
-}
-
-.navbar h2 {
-    color: #22c55e;
-}
-
-.btn-voltar {
-    text-decoration: none;
-    color: #e2e8f0;
-    background: #1e293b;
-    padding: 8px 15px;
-    border-radius: 8px;
-    transition: 0.3s;
-}
-
-.btn-voltar:hover {
-    background: #22c55e;
-    color: #020617;
-}
-
-/* =========================
-   PERFUMARIA
-========================= */
-.perfumaria {
-    padding: 40px;
-}
-
-.perfumaria h1 {
-    margin-bottom: 20px;
-}
-
-/* =========================
-   PRODUTOS
-========================= */
-.produtos {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-/* =========================
-   CARD
-========================= */
-.card {
-    background: #1e293b;
-    padding: 20px;
-    border-radius: 12px;
-    width: 220px;
-    text-align: center;
-    transition: 0.3s;
-}
-
-.card:hover {
-    transform: scale(1.05);
-}
-
-.card img {
-    width: 100%;
-    height: 180px;
-    object-fit: cover;
-    border-radius: 10px;
-}
-
-.card h3 {
-    margin: 10px 0;
-}
-
-.card p {
-    font-size: 14px;
-    color: #94a3b8;
-}
-
-/* =========================
-   PREÇO
-========================= */
-.preco {
-    display: block;
-    margin: 10px 0;
-    color: #22c55e;
-    font-weight: bold;
-}
-
-/* =========================
-   BOTÃO
-========================= */
-.card button {
-    background: #22c55e;
-    border: none;
-    padding: 10px;
-    border-radius: 8px;
-    cursor: pointer;
-    color: #020617;
-    font-weight: bold;
-    transition: 0.3s;
-}
-
-.card button:hover {
-    background: #16a34a;
-}
-    </style>
+    <link rel="stylesheet" href="../css/Perfumaria.css">
 </head>
 
 <body>
@@ -152,7 +25,7 @@ body {
 
             <!-- Card -->
             <div class="card">
-                <img src="../assets/images/perfumaria/feminino/perfume-floral-01.jpg">
+                <img src="../assets/Perfumaria/Perfume Floral feminino 01.jpeg">
                 <h3>Perfume Floral</h3>
                 <p>Fragrância leve e suave</p>
                 <span class="preco">R$ 89,90</span>
@@ -160,18 +33,66 @@ body {
             </div>
 
             <div class="card">
-                <img src="../assets/images/perfumaria/masculino/perfume-madeira-01.jpg">
-                <h3>Perfume Masculino</h3>
+                <img src="../assets/Perfumaria/Wepink Lauv Green.webp">
+                <h3>Wepink Lauv Green</h3>
                 <p>Aroma intenso e marcante</p>
                 <span class="preco">R$ 129,90</span>
                 <button>Comprar</button>
             </div>
 
             <div class="card">
-                <img src="../assets/images/perfumaria/body-splash/body-splash-01.jpg">
-                <h3>Body Splash</h3>
+                <img src="../assets/Perfumaria/Malbec blue.jpeg">
+                <h3>Malbec blue</h3>
                 <p>Ideal para o dia a dia</p>
                 <span class="preco">R$ 49,90</span>
+                <button>Comprar</button>
+            </div>
+
+            <div class="card">
+                <img src="../assets/Perfumaria/Perfume árabe feminino.jpeg">
+                <h3>Perfume Árabe</h3>
+                <p>Fragrância intensa e envolvente</p>
+                <span class="preco">R$ 99,90</span>
+                <button>Comprar</button>
+            </div>
+
+            <div class="card">
+                <img src="../assets/Perfumaria/Wepink red.webp">
+                <h3>Wepink Red</h3>
+                <p>Aroma intenso e marcante</p>
+                <span class="preco">R$ 129,90</span>
+                <button>Comprar</button>
+            </div>
+
+            <div class="card">
+                <img src="../assets/Perfumaria/wepink Golden.webp">
+                <h3>Wepink Golden</h3>
+                <p>Aroma intenso e marcante</p>
+                <span class="preco">R$ 99,90</span>
+                <button>Comprar</button>
+            </div>
+
+            <div class="card">
+                <img src="../assets/Perfumaria/wepink liberté.webp">
+                <h3>Wepink Liberté</h3>
+                <p>Aroma intenso e marcante</p>
+                <span class="preco">R$ 129,90</span>
+                <button>Comprar</button>
+            </div>
+
+            <div class="card">
+                <img src="../assets/Perfumaria/212 vpi black.webp">
+                <h3>212 V.P.I. Black</h3>
+                <p>Aroma intenso e marcante</p>
+                <span class="preco">R$ 129,90</span>
+                <button>Comprar</button>
+            </div>
+
+            <div class="card">
+                <img src="../assets/Perfumaria/1 Milion parfum.jpg">
+                <h3>1 Million Parfum</h3>
+                <p>Aroma intenso e marcante</p>
+                <span class="preco">R$ 129,90</span>
                 <button>Comprar</button>
             </div>
 
@@ -179,4 +100,5 @@ body {
     </section>
 
 </body>
+
 </html>
