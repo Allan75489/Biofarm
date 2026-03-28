@@ -200,3 +200,12 @@
             font-size: 24px;
         }
     }
+
+    .favorito {
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.favorito.ativo {
+    color: red;
+}
