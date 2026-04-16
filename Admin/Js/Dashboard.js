@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     /* =========================
-       ELEMENTOS GLOBAIS
+        ELEMENTOS GLOBAIS
     ========================= */
 
     const tabela = document.querySelector(".lista-vendas tbody");
@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
     let barraChart;
 
     /* =========================
-       GRÁFICO DIA / MÊS
+        GRÁFICO DIA / MÊS
     ========================= */
 
     const ctxLinha = document.getElementById("grafico");
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     /* =========================
-       GRÁFICO PIZZA
+        GRÁFICO PIZZA
     ========================= */
 
     const ctxPizza = document.getElementById("graficoPizza");
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     /* =========================
-       GRÁFICO BARRAS
+        GRÁFICO BARRAS
     ========================= */
 
     const ctxBarra = document.getElementById("graficoProdutos");
@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     /* =========================
-       ATUALIZAR TOTAL
+        ATUALIZAR TOTAL
     ========================= */
 
     function atualizarTotal() {
@@ -159,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     /* =========================
-       FILTRO POR MÊS (TABELA + GRÁFICOS)
+        FILTRO POR MÊS (TABELA + GRÁFICOS)
     ========================= */
 
     filtroMes?.addEventListener("change", function () {
