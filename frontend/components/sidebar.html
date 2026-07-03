@@ -1,0 +1,95 @@
+<!-- ================================================
+     SIDEBAR COMPONENT - BioSaúde
+     Include via JS fetch or copy into each page
+     ================================================ -->
+<aside class="sidebar" id="sidebar">
+
+  <!-- Toggle button (desktop) -->
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="Recolher menu">
+    <i class="fas fa-chevron-left"></i>
+  </button>
+
+  <!-- Logo -->
+  <div class="sidebar-logo">
+    <img src="../assets/img/logo.png" alt="BioSaúde" class="sidebar-logo-img" />
+    <div class="sidebar-logo-text">
+      <span class="sidebar-logo-name">BioSaúde</span>
+      <span class="sidebar-logo-tagline">Gestão Farmacêutica</span>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="sidebar-nav" aria-label="Menu principal">
+
+    <!-- Main -->
+    <div class="sidebar-section-label">Principal</div>
+
+    <a href="dashboard.html" class="nav-item" data-page="dashboard" data-tooltip="Dashboard">
+      <i class="fas fa-chart-pie nav-item-icon"></i>
+      <span class="nav-item-label">Dashboard</span>
+    </a>
+
+    <a href="catalogo.html" class="nav-item" data-page="catalogo" data-tooltip="Catálogo">
+      <i class="fas fa-store nav-item-icon"></i>
+      <span class="nav-item-label">Catálogo</span>
+    </a>
+
+    <a href="pedidos.html" class="nav-item" data-page="pedidos" data-tooltip="Pedidos">
+      <i class="fas fa-bag-shopping nav-item-icon"></i>
+      <span class="nav-item-label">Pedidos</span>
+      <span class="nav-badge">3</span>
+    </a>
+
+    <!-- Admin only -->
+    <div class="sidebar-section-label nav-admin-only">Administração</div>
+
+    <a href="estoque.html" class="nav-item nav-admin-only" data-page="estoque" data-tooltip="Estoque">
+      <i class="fas fa-boxes-stacked nav-item-icon"></i>
+      <span class="nav-item-label">Estoque</span>
+    </a>
+
+    <a href="usuarios.html" class="nav-item nav-admin-only" data-page="usuarios" data-tooltip="Usuários">
+      <i class="fas fa-users nav-item-icon"></i>
+      <span class="nav-item-label">Usuários</span>
+    </a>
+
+    <a href="relatorios.html" class="nav-item nav-admin-only" data-page="relatorios" data-tooltip="Relatórios">
+      <i class="fas fa-file-chart-column nav-item-icon"></i>
+      <span class="nav-item-label">Relatórios</span>
+    </a>
+
+    <a href="configuracoes.html" class="nav-item nav-admin-only" data-page="configuracoes" data-tooltip="Configurações">
+      <i class="fas fa-gear nav-item-icon"></i>
+      <span class="nav-item-label">Configurações</span>
+    </a>
+
+    <!-- Shared -->
+    <div class="sidebar-section-label">Conta</div>
+
+    <a href="perfil.html" class="nav-item" data-page="perfil" data-tooltip="Perfil">
+      <i class="fas fa-circle-user nav-item-icon"></i>
+      <span class="nav-item-label">Perfil</span>
+    </a>
+
+    <button class="nav-item" data-action="logout" data-tooltip="Sair" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;">
+      <i class="fas fa-right-from-bracket nav-item-icon"></i>
+      <span class="nav-item-label">Sair</span>
+    </button>
+
+  </nav>
+
+  <!-- Footer -->
+  <div class="sidebar-footer">
+    <div class="sidebar-user">
+      <div class="avatar avatar-sm">U</div>
+      <div class="sidebar-user-info">
+        <div class="sidebar-user-name">Usuário</div>
+        <div class="sidebar-user-role">Cliente</div>
+      </div>
+    </div>
+  </div>
+
+</aside>
+
+<!-- Mobile overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>

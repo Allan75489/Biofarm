@@ -1,0 +1,42 @@
+/* ================================================
+   RESPONSIVE CSS - BioSaúde
+   ================================================ */
+
+/* ── Tablet landscape (1024px) ── */
+@media (max-width: 1280px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── Tablet portrait (768px) ── */
+@media (max-width: 1024px) {
+  .stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .charts-grid { grid-template-columns: 1fr; }
+  .content-grid { grid-template-columns: 1fr; }
+  .toolbar { flex-wrap: wrap; }
+  .search-box { min-width: 100%; }
+  .data-table th, .data-table td { padding: var(--space-3) var(--space-4); }
+}
+
+/* ── Mobile (640px) ── */
+@media (max-width: 640px) {
+  .stats-grid { grid-template-columns: 1fr; }
+  .products-grid { grid-template-columns: repeat(2, 1fr); }
+  .modal { border-radius: var(--radius-xl) var(--radius-xl) 0 0; }
+  .modal-overlay { align-items: flex-end; padding: 0; }
+  .toast-container { top: auto; bottom: var(--space-4); left: var(--space-4); right: var(--space-4); max-width: none; }
+  .pagination { flex-direction: column; align-items: flex-start; }
+  .page-header-row { flex-direction: column; align-items: flex-start; }
+  .catalog-toolbar { flex-direction: column; align-items: flex-start; }
+}
+
+/* ── Small mobile (480px) ── */
+@media (max-width: 480px) {
+  .products-grid { grid-template-columns: 1fr; }
+  .login-form-panel { padding: var(--space-6) var(--space-4); }
+  .page-content { padding: var(--space-4); padding-top: calc(var(--navbar-height) + var(--space-4)); }
+  .profile-header { padding: var(--space-5); }
+  .modal-body { padding: var(--space-4); }
+  .modal-header { padding: var(--space-4); }
+  .modal-footer { padding: var(--space-4); }
+  .category-pills { overflow-x: auto; flex-wrap: nowrap; padding-bottom: var(--space-2); }
+}

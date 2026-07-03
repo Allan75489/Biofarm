@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BioSaúde — Dashboard</title>
+  <link rel="icon" type="image/png" href="../assets/img/logo.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="../assets/css/reset.css" />
+  <link rel="stylesheet" href="../assets/css/variables.css" />
+  <link rel="stylesheet" href="../assets/css/global.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/sidebar.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard.css" />
+  <link rel="stylesheet" href="../assets/css/responsive.css" />
+</head>
+<body>
+<div class="app-layout">
+
+  <!-- ══ SIDEBAR ══ -->
+  <aside class="sidebar" id="sidebar">
+    <button class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-chevron-left"></i></button>
+    <div class="sidebar-logo">
+      <img src="../assets/img/logo.png" alt="BioSaúde" class="sidebar-logo-img" />
+      <div class="sidebar-logo-text">
+        <span class="sidebar-logo-name">BioSaúde</span>
+        <span class="sidebar-logo-tagline">Gestão Farmacêutica</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Principal</div>
+      <a href="dashboard.html" class="nav-item active" data-page="dashboard" data-tooltip="Dashboard"><i class="fas fa-chart-pie nav-item-icon"></i><span class="nav-item-label">Dashboard</span></a>
+      <a href="catalogo.html" class="nav-item" data-page="catalogo" data-tooltip="Catálogo"><i class="fas fa-store nav-item-icon"></i><span class="nav-item-label">Catálogo</span></a>
+      <a href="pedidos.html" class="nav-item" data-page="pedidos" data-tooltip="Pedidos"><i class="fas fa-bag-shopping nav-item-icon"></i><span class="nav-item-label">Pedidos</span><span class="nav-badge">3</span></a>
+      <div class="sidebar-section-label nav-admin-only">Administração</div>
+      <a href="estoque.html" class="nav-item nav-admin-only" data-page="estoque" data-tooltip="Estoque"><i class="fas fa-boxes-stacked nav-item-icon"></i><span class="nav-item-label">Estoque</span></a>
+      <a href="usuarios.html" class="nav-item nav-admin-only" data-page="usuarios" data-tooltip="Usuários"><i class="fas fa-users nav-item-icon"></i><span class="nav-item-label">Usuários</span></a>
+      <a href="relatorios.html" class="nav-item nav-admin-only" data-page="relatorios" data-tooltip="Relatórios"><i class="fas fa-file-chart-column nav-item-icon"></i><span class="nav-item-label">Relatórios</span></a>
+      <a href="configuracoes.html" class="nav-item nav-admin-only" data-page="configuracoes" data-tooltip="Configurações"><i class="fas fa-gear nav-item-icon"></i><span class="nav-item-label">Configurações</span></a>
+      <div class="sidebar-section-label">Conta</div>
+      <a href="perfil.html" class="nav-item" data-page="perfil" data-tooltip="Perfil"><i class="fas fa-circle-user nav-item-icon"></i><span class="nav-item-label">Perfil</span></a>
+      <button class="nav-item" data-action="logout" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;"><i class="fas fa-right-from-bracket nav-item-icon"></i><span class="nav-item-label">Sair</span></button>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="avatar avatar-sm">U</div>
+        <div class="sidebar-user-info">
+          <div class="sidebar-user-name">Usuário</div>
+          <div class="sidebar-user-role">ADM</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <!-- ══ MAIN ══ -->
+  <div class="main-content" id="mainContent">
+
+    <!-- NAVBAR -->
+    <header class="navbar" id="navbar">
+      <div class="navbar-left">
+        <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+        <div class="navbar-search">
+          <i class="fas fa-magnifying-glass"></i>
+          <input type="text" placeholder="Buscar produtos, pedidos..." />
+        </div>
+      </div>
+      <div class="navbar-right">
+        <button class="notif-btn" data-tooltip="Notificações">
+          <i class="fas fa-bell"></i>
+          <span class="notif-dot"></span>
+        </button>
+        <div class="dropdown">
+          <div class="navbar-user dropdown-trigger" data-dropdown-trigger>
+            <div class="navbar-user-info">
+              <div class="navbar-user-name">Usuário</div>
+              <div class="navbar-user-role">ADM</div>
+            </div>
+            <div class="avatar">U</div>
+            <i class="fas fa-chevron-down" style="font-size:10px;color:var(--text-muted)"></i>
+          </div>
+          <div class="dropdown-menu">
+            <a href="perfil.html" class="dropdown-item"><i class="fas fa-circle-user"></i> Meu Perfil</a>
+            <a href="configuracoes.html" class="dropdown-item"><i class="fas fa-gear"></i> Configurações</a>
+            <div class="dropdown-divider"></div>
+            <button class="dropdown-item danger" data-action="logout"><i class="fas fa-right-from-bracket"></i> Sair</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- PAGE CONTENT -->
+    <main class="page-content">
+
+      <!-- Header -->
+      <div class="page-header">
+        <div class="page-header-row">
+          <div>
+            <h1 class="page-title">Dashboard</h1>
+            <p class="page-subtitle">Bem-vindo de volta! Aqui está o resumo do dia.</p>
+          </div>
+          <div style="display:flex;gap:var(--space-3)">
+            <button class="btn btn-secondary"><i class="fas fa-download"></i> Exportar</button>
+            <button class="btn btn-primary"><i class="fas fa-plus"></i> Novo Pedido</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card fade-in" style="animation-delay:0ms">
+          <div class="stat-icon icon-blue"><i class="fas fa-boxes-stacked"></i></div>
+          <div class="stat-info">
+            <div class="stat-label">Total de Produtos</div>
+            <div class="stat-value" data-counter="1248" data-prefix="">1.248</div>
+            <div class="stat-change positive"><i class="fas fa-arrow-trend-up"></i> +12% este mês</div>
+          </div>
+        </div>
+        <div class="stat-card fade-in" style="animation-delay:80ms">
+          <div class="stat-icon icon-yellow"><i class="fas fa-bag-shopping"></i></div>
+          <div class="stat-info">
+            <div class="stat-label">Pedidos do Mês</div>
+            <div class="stat-value" data-counter="384">384</div>
+            <div class="stat-change positive"><i class="fas fa-arrow-trend-up"></i> +8% vs mês anterior</div>
+          </div>
+        </div>
+        <div class="stat-card fade-in" style="animation-delay:160ms">
+          <div class="stat-icon icon-green"><i class="fas fa-users"></i></div>
+          <div class="stat-info">
+            <div class="stat-label">Clientes Ativos</div>
+            <div class="stat-value" data-counter="2891">2.891</div>
+            <div class="stat-change positive"><i class="fas fa-arrow-trend-up"></i> +23 esta semana</div>
+          </div>
+        </div>
+        <div class="stat-card fade-in" style="animation-delay:240ms">
+          <div class="stat-icon icon-purple"><i class="fas fa-sack-dollar"></i></div>
+          <div class="stat-info">
+            <div class="stat-label">Faturamento</div>
+            <div class="stat-value" data-counter="68000" data-currency="true">R$ 68.000</div>
+            <div class="stat-change positive"><i class="fas fa-arrow-trend-up"></i> +18% vs mês anterior</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts -->
+      <div class="charts-grid">
+
+        <!-- Sales bar chart -->
+        <div class="card fade-in">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Vendas Mensais</div>
+              <div class="card-subtitle">Faturamento por mês — 2025</div>
+            </div>
+            <div class="flex gap-2">
+              <button class="btn btn-ghost btn-sm">Ano</button>
+              <button class="btn btn-secondary btn-sm" style="background:var(--accent-light);color:var(--accent-hover)">Mês</button>
+            </div>
+          </div>
+          <div style="display:flex;gap:var(--space-3);height:240px;align-items:flex-end;padding:0 var(--space-2) var(--space-4);">
+            <div style="display:flex;flex-direction:column;justify-content:space-between;height:100%;padding-bottom:24px;">
+              <span style="font-size:10px;color:var(--text-muted)">80k</span>
+              <span style="font-size:10px;color:var(--text-muted)">60k</span>
+              <span style="font-size:10px;color:var(--text-muted)">40k</span>
+              <span style="font-size:10px;color:var(--text-muted)">20k</span>
+              <span style="font-size:10px;color:var(--text-muted)">0</span>
+            </div>
+            <div id="salesChart" style="flex:1;display:flex;align-items:flex-end;gap:6px;height:100%;position:relative;">
+              <!-- Grid lines -->
+              <div style="position:absolute;inset:0;pointer-events:none;">
+                <div style="position:absolute;top:0;left:0;right:0;height:1px;background:var(--border-light)"></div>
+                <div style="position:absolute;top:25%;left:0;right:0;height:1px;background:var(--border-light)"></div>
+                <div style="position:absolute;top:50%;left:0;right:0;height:1px;background:var(--border-light)"></div>
+                <div style="position:absolute;top:75%;left:0;right:0;height:1px;background:var(--border-light)"></div>
+              </div>
+              <!-- Bars -->
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;">
+                <div class="chart-bar" style="background:var(--accent);opacity:.5;width:100%;height:35%;border-radius:4px 4px 0 0;transition:height 1s ease;cursor:pointer;" data-tooltip="Jan - R$ 28.000"></div>
+                <span style="font-size:9px;color:var(--text-muted)">Jan</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;">
+                <div class="chart-bar" style="background:var(--accent);opacity:.6;width:100%;height:44%;border-radius:4px 4px 0 0;transition:height 1s ease .1s;cursor:pointer;" data-tooltip="Fev - R$ 35.000"></div>
+                <span style="font-size:9px;color:var(--text-muted)">Fev</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;">
+                <div class="chart-bar" style="background:var(--accent);opacity:.5;width:100%;height:34%;border-radius:4px 4px 0 0;transition:height 1s ease .2s;cursor:pointer;" data-tooltip="Mar - R$ 27.000"></div>
+                <span style="font-size:9px;color:var(--text-muted)">Mar</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;">
+                <div class="chart-bar" style="background:var(--accent);opacity:.7;width:100%;height:53%;border-radius:4px 4px 0 0;transition:height 1s ease .3s;cursor:pointer;" data-tooltip="Abr - R$ 42.000"></div>
+                <span style="font-size:9px;color:var(--text-muted)">Abr</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;">
+                <div class="chart-bar" style="background:var(--accent);opacity:.65;width:100%;height:48%;border-radius:4px 4px 0 0;transition:height 1s ease .4s;cursor:pointer;" data-tooltip="Mai - R$ 38.000"></div>
+                <span style="font-size:9px;color:var(--text-muted)">Mai</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;">
+                <div class="chart-bar" style="background:var(--accent);opacity:.8;width:100%;height:64%;border-radius:4px 4px 0 0;transition:height 1s ease .5s;cursor:pointer;" data-tooltip="Jun - R$ 51.000"></div>
+                <span style="font-size:9px;color:var(--text-muted)">Jun</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;">
+                <div class="chart-bar" style="background:var(--accent);opacity:.75;width:100%;height:58%;border-radius:4px 4px 0 0;transition:height 1s ease .6s;cursor:pointer;" data-tooltip="Jul - R$ 46.000"></div>
+                <span style="font-size:9px;color:var(--text-muted)">Jul</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;">
+                <div class="chart-bar" style="background:var(--accent);opacity:.9;width:100%;height:73%;border-radius:4px 4px 0 0;transition:height 1s ease .7s;cursor:pointer;" data-tooltip="Ago - R$ 58.000"></div>
+                <span style="font-size:9px;color:var(--text-muted)">Ago</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;">
+                <div class="chart-bar" style="background:var(--accent);opacity:.85;width:100%;height:65%;border-radius:4px 4px 0 0;transition:height 1s ease .8s;cursor:pointer;" data-tooltip="Set - R$ 52.000"></div>
+                <span style="font-size:9px;color:var(--text-muted)">Set</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;">
+                <div class="chart-bar" style="background:var(--accent);opacity:.95;width:100%;height:79%;border-radius:4px 4px 0 0;transition:height 1s ease .9s;cursor:pointer;" data-tooltip="Out - R$ 63.000"></div>
+                <span style="font-size:9px;color:var(--text-muted)">Out</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;">
+                <div class="chart-bar" style="background:var(--accent);width:100%;height:89%;border-radius:4px 4px 0 0;transition:height 1s ease 1s;cursor:pointer;" data-tooltip="Nov - R$ 71.000"></div>
+                <span style="font-size:9px;color:var(--text-muted)">Nov</span>
+              </div>
+              <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;height:100%;">
+                <div class="chart-bar" style="background:linear-gradient(180deg,var(--accent-hover),var(--accent));width:100%;height:85%;border-radius:4px 4px 0 0;transition:height 1s ease 1.1s;box-shadow:0 0 20px rgba(37,99,235,.4);cursor:pointer;" data-tooltip="Dez - R$ 68.000"></div>
+                <span style="font-size:9px;color:var(--text-muted)">Dez</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Donut chart -->
+        <div class="card fade-in" style="animation-delay:100ms">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Categorias</div>
+              <div class="card-subtitle">Vendas por categoria</div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:var(--space-5)">
+            <svg viewBox="0 0 120 120" width="130" height="130" style="transform:rotate(-90deg)">
+              <circle cx="60" cy="60" r="50" fill="none" stroke="var(--border-light)" stroke-width="20"/>
+              <circle class="donut-segment" cx="60" cy="60" r="50" fill="none" stroke="#2563EB" stroke-width="20"
+                stroke-dasharray="141.37 172.79" stroke-dashoffset="0"/>
+              <circle class="donut-segment" cx="60" cy="60" r="50" fill="none" stroke="#22C55E" stroke-width="20"
+                stroke-dasharray="87.96 226.2" stroke-dashoffset="-141.37"/>
+              <circle class="donut-segment" cx="60" cy="60" r="50" fill="none" stroke="#F59E0B" stroke-width="20"
+                stroke-dasharray="56.55 257.61" stroke-dashoffset="-229.33"/>
+              <circle class="donut-segment" cx="60" cy="60" r="50" fill="none" stroke="#06B6D4" stroke-width="20"
+                stroke-dasharray="28.27 285.89" stroke-dashoffset="-285.88"/>
+            </svg>
+            <div class="donut-legend" style="width:100%">
+              <div class="donut-legend-item">
+                <div class="donut-legend-left"><span class="donut-legend-dot" style="background:#2563EB"></span>Medicamentos</div>
+                <span class="donut-legend-value">45%</span>
+              </div>
+              <div class="donut-legend-item">
+                <div class="donut-legend-left"><span class="donut-legend-dot" style="background:#22C55E"></span>Perfumaria</div>
+                <span class="donut-legend-value">28%</span>
+              </div>
+              <div class="donut-legend-item">
+                <div class="donut-legend-left"><span class="donut-legend-dot" style="background:#F59E0B"></span>Higiene</div>
+                <span class="donut-legend-value">18%</span>
+              </div>
+              <div class="donut-legend-item">
+                <div class="donut-legend-left"><span class="donut-legend-dot" style="background:#06B6D4"></span>Vitaminas</div>
+                <span class="donut-legend-value">9%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Recent Orders + Top Products -->
+      <div class="content-grid">
+
+        <!-- Recent orders -->
+        <div class="card fade-in">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Pedidos Recentes</div>
+              <div class="card-subtitle">Últimas 5 transações</div>
+            </div>
+            <a href="pedidos.html" class="btn btn-ghost btn-sm">Ver todos <i class="fas fa-arrow-right"></i></a>
+          </div>
+          <div class="table-wrapper" style="border:none;border-radius:0">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Pedido</th>
+                  <th>Cliente</th>
+                  <th>Data</th>
+                  <th>Valor</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-primary">#00384</td>
+                  <td>Maria Fernanda S.</td>
+                  <td>29/06/2025</td>
+                  <td class="text-primary" style="font-weight:600">R$ 289,90</td>
+                  <td><span class="badge badge-green"><span class="badge-dot"></span>Entregue</span></td>
+                </tr>
+                <tr>
+                  <td class="text-primary">#00383</td>
+                  <td>João Paulo Melo</td>
+                  <td>29/06/2025</td>
+                  <td class="text-primary" style="font-weight:600">R$ 64,70</td>
+                  <td><span class="badge badge-blue"><span class="badge-dot"></span>Enviado</span></td>
+                </tr>
+                <tr>
+                  <td class="text-primary">#00382</td>
+                  <td>Ana Beatriz Lima</td>
+                  <td>28/06/2025</td>
+                  <td class="text-primary" style="font-weight:600">R$ 432,50</td>
+                  <td><span class="badge badge-yellow"><span class="badge-dot"></span>Processando</span></td>
+                </tr>
+                <tr>
+                  <td class="text-primary">#00381</td>
+                  <td>Carlos Eduardo R.</td>
+                  <td>28/06/2025</td>
+                  <td class="text-primary" style="font-weight:600">R$ 98,00</td>
+                  <td><span class="badge badge-green"><span class="badge-dot"></span>Entregue</span></td>
+                </tr>
+                <tr>
+                  <td class="text-primary">#00380</td>
+                  <td>Patrícia Sousa</td>
+                  <td>27/06/2025</td>
+                  <td class="text-primary" style="font-weight:600">R$ 156,30</td>
+                  <td><span class="badge badge-red"><span class="badge-dot"></span>Cancelado</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Top products -->
+        <div class="card fade-in" style="animation-delay:80ms">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Mais Vendidos</div>
+              <div class="card-subtitle">Top 5 produtos do mês</div>
+            </div>
+          </div>
+          <div class="top-products-list">
+            <div class="top-product-item">
+              <div class="top-product-rank rank-1">1</div>
+              <img src="../assets/img/dipirona.png" alt="Dipirona" class="top-product-img" />
+              <div class="top-product-info">
+                <div class="top-product-name">Dipirona 1g</div>
+                <div class="top-product-cat">Analgesicos</div>
+                <div class="progress-bar"><div class="progress-fill" style="width:88%;background:var(--accent)"></div></div>
+              </div>
+              <div class="top-product-sales">
+                <div class="top-product-value">R$ 1.246</div>
+                <div class="top-product-units">140 un.</div>
+              </div>
+            </div>
+            <div class="top-product-item">
+              <div class="top-product-rank rank-2">2</div>
+              <img src="../assets/img/1million.jpg" alt="1 Million" class="top-product-img" />
+              <div class="top-product-info">
+                <div class="top-product-name">1 Million Parfum</div>
+                <div class="top-product-cat">Perfumaria</div>
+                <div class="progress-bar"><div class="progress-fill" style="width:72%;background:var(--success)"></div></div>
+              </div>
+              <div class="top-product-sales">
+                <div class="top-product-value">R$ 2.319</div>
+                <div class="top-product-units">8 un.</div>
+              </div>
+            </div>
+            <div class="top-product-item">
+              <div class="top-product-rank rank-3">3</div>
+              <img src="../assets/img/vitamina-c.png" alt="Vitamina C" class="top-product-img" />
+              <div class="top-product-info">
+                <div class="top-product-name">Vitamina C 1000mg</div>
+                <div class="top-product-cat">Vitaminas</div>
+                <div class="progress-bar"><div class="progress-fill" style="width:58%;background:var(--warning)"></div></div>
+              </div>
+              <div class="top-product-sales">
+                <div class="top-product-value">R$ 897</div>
+                <div class="top-product-units">30 un.</div>
+              </div>
+            </div>
+            <div class="top-product-item">
+              <div class="top-product-rank rank-other">4</div>
+              <img src="../assets/img/ibuprofeno.png" alt="Ibuprofeno" class="top-product-img" />
+              <div class="top-product-info">
+                <div class="top-product-name">Ibuprofeno 400mg</div>
+                <div class="top-product-cat">Analgesicos</div>
+                <div class="progress-bar"><div class="progress-fill" style="width:45%;background:var(--info)"></div></div>
+              </div>
+              <div class="top-product-sales">
+                <div class="top-product-value">R$ 625</div>
+                <div class="top-product-units">50 un.</div>
+              </div>
+            </div>
+            <div class="top-product-item">
+              <div class="top-product-rank rank-other">5</div>
+              <img src="../assets/img/bepantol.webp" alt="Bepantol" class="top-product-img" />
+              <div class="top-product-info">
+                <div class="top-product-name">Bepantol Pomada</div>
+                <div class="top-product-cat">Pomadas</div>
+                <div class="progress-bar"><div class="progress-fill" style="width:30%;background:var(--accent)"></div></div>
+              </div>
+              <div class="top-product-sales">
+                <div class="top-product-value">R$ 412</div>
+                <div class="top-product-units">18 un.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+  </div><!-- /main-content -->
+
+</div><!-- /app-layout -->
+
+<div class="toast-container"></div>
+
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/sidebar.js"></script>
+<script src="../assets/js/dashboard.js"></script>
+</body>
+</html>

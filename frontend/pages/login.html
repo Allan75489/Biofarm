@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BioSaúde — Login</title>
+  <link rel="icon" type="image/png" href="../assets/img/logo.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="../assets/css/reset.css" />
+  <link rel="stylesheet" href="../assets/css/variables.css" />
+  <link rel="stylesheet" href="../assets/css/global.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/login.css" />
+</head>
+<body>
+<div class="login-page">
+
+  <!-- ── Hero Panel ── -->
+  <div class="login-hero">
+    <div class="login-hero-content">
+      <img src="../assets/img/logo.png" alt="BioSaúde" class="login-hero-logo" />
+      <h1 class="login-hero-title">
+        Bem-vindo ao<br /><span>BioSaúde</span>
+      </h1>
+      <p class="login-hero-desc">
+        Sistema completo de gestão farmacêutica. Controle seu estoque, pedidos e clientes com tecnologia de ponta.
+      </p>
+      <div class="login-hero-features">
+        <div class="login-feature">
+          <div class="login-feature-icon"><i class="fas fa-chart-line"></i></div>
+          <div class="login-feature-text">
+            <h4>Dashboard Inteligente</h4>
+            <p>Indicadores em tempo real do seu negócio</p>
+          </div>
+        </div>
+        <div class="login-feature">
+          <div class="login-feature-icon"><i class="fas fa-boxes-stacked"></i></div>
+          <div class="login-feature-text">
+            <h4>Gestão de Estoque</h4>
+            <p>Controle total de produtos e validades</p>
+          </div>
+        </div>
+        <div class="login-feature">
+          <div class="login-feature-icon"><i class="fas fa-shield-halved"></i></div>
+          <div class="login-feature-text">
+            <h4>Segurança Total</h4>
+            <p>Autenticação JWT e controle de acesso por perfil</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Form Panel ── -->
+  <div class="login-form-panel">
+    <div class="login-card">
+
+      <div class="login-card-header">
+        <img src="../assets/img/logo.png" alt="BioSaúde" class="logo-small" />
+        <h2>Acessar sua conta</h2>
+        <p>Insira suas credenciais para continuar</p>
+      </div>
+
+      <form id="loginForm" class="login-form" novalidate>
+
+        <!-- Username -->
+        <div class="form-group">
+          <label class="form-label" for="username">Usuário ou E-mail <span>*</span></label>
+          <div class="input-wrapper">
+            <i class="fas fa-user input-icon"></i>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              class="form-input has-icon"
+              placeholder="seu@email.com"
+              autocomplete="username"
+              required
+            />
+          </div>
+          <span class="form-error" id="usernameError" style="display:none">
+            <i class="fas fa-circle-exclamation"></i> Informe seu usuário ou e-mail
+          </span>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+          <label class="form-label" for="password">Senha <span>*</span></label>
+          <div class="input-wrapper">
+            <i class="fas fa-lock input-icon"></i>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="form-input has-icon has-icon-right"
+              placeholder="••••••••"
+              autocomplete="current-password"
+              required
+            />
+            <i class="fas fa-eye input-icon-right" id="togglePassword"></i>
+          </div>
+          <span class="form-error" id="passwordError" style="display:none">
+            <i class="fas fa-circle-exclamation"></i> Informe sua senha
+          </span>
+        </div>
+
+        <!-- Options -->
+        <div class="login-options">
+          <label class="form-checkbox-wrapper">
+            <input type="checkbox" class="form-checkbox" id="rememberMe" />
+            <span class="form-checkbox-label">Lembrar-me</span>
+          </label>
+          <button type="button" class="login-forgot">Esqueci a senha</button>
+        </div>
+
+        <!-- Submit -->
+        <button type="submit" class="btn-login" id="submitBtn">
+          <span class="btn-text">Entrar</span>
+          <span class="spinner" style="display:none"></span>
+        </button>
+
+      </form>
+
+      <div class="login-footer">
+        <p>© 2025 BioSaúde. Todos os direitos reservados.</p>
+        <p style="margin-top:4px; font-size:10px; color:var(--text-disabled)">
+          Use senha <strong style="color:var(--accent-hover)">admin</strong> para acesso ADMIN
+        </p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Toast -->
+<div class="toast-container"></div>
+
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BioSaúde — Catálogo</title>
+  <link rel="icon" type="image/png" href="../assets/img/logo.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="../assets/css/reset.css" />
+  <link rel="stylesheet" href="../assets/css/variables.css" />
+  <link rel="stylesheet" href="../assets/css/global.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/sidebar.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard.css" />
+  <link rel="stylesheet" href="../assets/css/catalogo.css" />
+  <link rel="stylesheet" href="../assets/css/responsive.css" />
+</head>
+<body>
+<div class="app-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <button class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-chevron-left"></i></button>
+    <div class="sidebar-logo">
+      <img src="../assets/img/logo.png" alt="BioSaúde" class="sidebar-logo-img" />
+      <div class="sidebar-logo-text"><span class="sidebar-logo-name">BioSaúde</span><span class="sidebar-logo-tagline">Gestão Farmacêutica</span></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Principal</div>
+      <a href="dashboard.html" class="nav-item" data-page="dashboard" data-tooltip="Dashboard"><i class="fas fa-chart-pie nav-item-icon"></i><span class="nav-item-label">Dashboard</span></a>
+      <a href="catalogo.html" class="nav-item active" data-page="catalogo" data-tooltip="Catálogo"><i class="fas fa-store nav-item-icon"></i><span class="nav-item-label">Catálogo</span></a>
+      <a href="pedidos.html" class="nav-item" data-page="pedidos" data-tooltip="Pedidos"><i class="fas fa-bag-shopping nav-item-icon"></i><span class="nav-item-label">Pedidos</span><span class="nav-badge">3</span></a>
+      <div class="sidebar-section-label">Administração</div>
+      <a href="estoque.html" class="nav-item" data-page="estoque" data-tooltip="Estoque"><i class="fas fa-boxes-stacked nav-item-icon"></i><span class="nav-item-label">Estoque</span></a>
+      <a href="usuarios.html" class="nav-item" data-page="usuarios" data-tooltip="Usuários"><i class="fas fa-users nav-item-icon"></i><span class="nav-item-label">Usuários</span></a>
+      <div class="sidebar-section-label">Conta</div>
+      <a href="perfil.html" class="nav-item" data-page="perfil" data-tooltip="Perfil"><i class="fas fa-circle-user nav-item-icon"></i><span class="nav-item-label">Perfil</span></a>
+      <button class="nav-item" data-action="logout" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;"><i class="fas fa-right-from-bracket nav-item-icon"></i><span class="nav-item-label">Sair</span></button>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user"><div class="avatar avatar-sm">U</div><div class="sidebar-user-info"><div class="sidebar-user-name">Usuário</div><div class="sidebar-user-role">ADM</div></div></div>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="main-content" id="mainContent">
+
+    <!-- NAVBAR -->
+    <header class="navbar" id="navbar">
+      <div class="navbar-left">
+        <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+        <div class="navbar-search"><i class="fas fa-magnifying-glass"></i><input type="text" placeholder="Buscar produtos..." /></div>
+      </div>
+      <div class="navbar-right">
+        <button class="notif-btn"><i class="fas fa-bell"></i><span class="notif-dot"></span></button>
+        <div class="navbar-user">
+          <div class="navbar-user-info"><div class="navbar-user-name">Usuário</div><div class="navbar-user-role">ADM</div></div>
+          <div class="avatar">U</div>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content">
+
+      <div class="page-header">
+        <div class="page-header-row">
+          <div>
+            <h1 class="page-title">Catálogo de Produtos</h1>
+            <p class="page-subtitle">Visualize e gerencie todos os produtos cadastrados</p>
+          </div>
+          <button class="btn btn-primary" onclick="App.Toast.info('Em breve','Disponível após integração com API.')">
+            <i class="fas fa-plus"></i> Novo Produto
+          </button>
+        </div>
+      </div>
+
+      <!-- Categorias -->
+      <div class="category-pills">
+        <button class="category-pill active" data-cat="Todos"><i class="fas fa-grid-2"></i> Todos</button>
+        <button class="category-pill" data-cat="Analgesicos"><i class="fas fa-pills"></i> Analgésicos</button>
+        <button class="category-pill" data-cat="Higiene"><i class="fas fa-pump-soap"></i> Higiene</button>
+        <button class="category-pill" data-cat="Pomadas"><i class="fas fa-jar"></i> Pomadas</button>
+        <button class="category-pill" data-cat="Vitaminas"><i class="fas fa-capsules"></i> Vitaminas</button>
+        <button class="category-pill" data-cat="Perfumaria"><i class="fas fa-spray-can-sparkles"></i> Perfumaria</button>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="catalog-toolbar">
+        <div class="search-box">
+          <i class="fas fa-magnifying-glass"></i>
+          <input type="text" id="catalogSearch" class="search-input" placeholder="Buscar por nome ou categoria..." />
+        </div>
+        <select id="sortSelect" class="filter-select">
+          <option value="name">Nome A-Z</option>
+          <option value="price-asc">Menor preço</option>
+          <option value="price-desc">Maior preço</option>
+          <option value="stock">Maior estoque</option>
+        </select>
+        <div class="view-toggle">
+          <button class="view-btn active" data-view="grid" data-tooltip="Grade"><i class="fas fa-grid-2"></i></button>
+          <button class="view-btn" data-view="list" data-tooltip="Lista"><i class="fas fa-list"></i></button>
+        </div>
+        <div class="catalog-results-count"><strong id="resultsCount">16</strong> produtos encontrados</div>
+      </div>
+
+      <!-- Grid de produtos (renderizado pelo JS) -->
+      <div id="productsGrid" class="products-grid"></div>
+
+    </main>
+  </div>
+</div>
+
+<!-- Modal de detalhes -->
+<div class="modal-overlay" id="quickViewModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h3 class="modal-title">Detalhes do Produto</h3>
+      <button class="modal-close" onclick="App.Modal.close('quickViewModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;gap:var(--space-6);flex-wrap:wrap;align-items:flex-start">
+        <div style="flex:0 0 180px;background:rgba(255,255,255,.03);border-radius:var(--radius-lg);padding:var(--space-6);display:flex;align-items:center;justify-content:center;border:1px solid var(--border-light)">
+          <img id="qvImage" src="" alt="" style="max-height:160px;object-fit:contain;" />
+        </div>
+        <div style="flex:1;min-width:200px;display:flex;flex-direction:column;gap:var(--space-4)">
+          <span id="qvBadge" class="badge"></span>
+          <div style="font-size:var(--text-xs);color:var(--accent-hover);font-weight:600;text-transform:uppercase;letter-spacing:.05em" id="qvCat"></div>
+          <h2 style="font-size:var(--text-xl);font-weight:700;color:var(--text-primary);line-height:1.3" id="qvName"></h2>
+          <div style="font-size:var(--text-3xl);font-weight:700;color:var(--text-primary)" id="qvPrice"></div>
+          <div style="font-size:var(--text-sm);color:var(--text-muted)">
+            <i class="fas fa-box-open" style="margin-right:6px"></i><span id="qvStock"></span>
+          </div>
+          <div style="display:flex;gap:var(--space-3);margin-top:var(--space-2)">
+            <button class="btn btn-primary" onclick="App.Toast.info('Em breve','Edição disponível após integração com API.');App.Modal.close('quickViewModal')">
+              <i class="fas fa-pen"></i> Editar Produto
+            </button>
+            <button class="btn btn-secondary" onclick="App.Modal.close('quickViewModal')">Fechar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container"></div>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/sidebar.js"></script>
+<script src="../assets/js/catalogo.js"></script>
+</body>
+</html>

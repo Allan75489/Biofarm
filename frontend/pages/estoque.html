@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BioSaúde — Estoque</title>
+  <link rel="icon" type="image/png" href="../assets/img/logo.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="../assets/css/reset.css" />
+  <link rel="stylesheet" href="../assets/css/variables.css" />
+  <link rel="stylesheet" href="../assets/css/global.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/sidebar.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard.css" />
+  <link rel="stylesheet" href="../assets/css/estoque.css" />
+  <link rel="stylesheet" href="../assets/css/responsive.css" />
+</head>
+<body>
+<div class="app-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <button class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-chevron-left"></i></button>
+    <div class="sidebar-logo">
+      <img src="../assets/img/logo.png" alt="BioSaúde" class="sidebar-logo-img" />
+      <div class="sidebar-logo-text"><span class="sidebar-logo-name">BioSaúde</span><span class="sidebar-logo-tagline">Gestão Farmacêutica</span></div>
+    </div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Principal</div>
+      <a href="dashboard.html" class="nav-item" data-page="dashboard" data-tooltip="Dashboard"><i class="fas fa-chart-pie nav-item-icon"></i><span class="nav-item-label">Dashboard</span></a>
+      <a href="catalogo.html" class="nav-item" data-page="catalogo" data-tooltip="Catálogo"><i class="fas fa-store nav-item-icon"></i><span class="nav-item-label">Catálogo</span></a>
+      <a href="pedidos.html" class="nav-item" data-page="pedidos" data-tooltip="Pedidos"><i class="fas fa-bag-shopping nav-item-icon"></i><span class="nav-item-label">Pedidos</span><span class="nav-badge">3</span></a>
+      <div class="sidebar-section-label">Administração</div>
+      <a href="estoque.html" class="nav-item active" data-page="estoque" data-tooltip="Estoque"><i class="fas fa-boxes-stacked nav-item-icon"></i><span class="nav-item-label">Estoque</span></a>
+      <a href="usuarios.html" class="nav-item" data-page="usuarios" data-tooltip="Usuários"><i class="fas fa-users nav-item-icon"></i><span class="nav-item-label">Usuários</span></a>
+      <div class="sidebar-section-label">Conta</div>
+      <a href="perfil.html" class="nav-item" data-page="perfil" data-tooltip="Perfil"><i class="fas fa-circle-user nav-item-icon"></i><span class="nav-item-label">Perfil</span></a>
+      <button class="nav-item" data-action="logout" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;"><i class="fas fa-right-from-bracket nav-item-icon"></i><span class="nav-item-label">Sair</span></button>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user"><div class="avatar avatar-sm">U</div><div class="sidebar-user-info"><div class="sidebar-user-name">Usuário</div><div class="sidebar-user-role">ADM</div></div></div>
+    </div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="main-content" id="mainContent">
+
+    <!-- NAVBAR -->
+    <header class="navbar" id="navbar">
+      <div class="navbar-left">
+        <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+        <div class="navbar-search"><i class="fas fa-magnifying-glass"></i><input type="text" placeholder="Buscar no sistema..." /></div>
+      </div>
+      <div class="navbar-right">
+        <button class="notif-btn"><i class="fas fa-bell"></i><span class="notif-dot"></span></button>
+        <div class="navbar-user">
+          <div class="navbar-user-info"><div class="navbar-user-name">Usuário</div><div class="navbar-user-role">ADM</div></div>
+          <div class="avatar">U</div>
+        </div>
+      </div>
+    </header>
+
+    <main class="page-content">
+
+      <!-- Cabeçalho -->
+      <div class="page-header">
+        <div class="page-header-row">
+          <div>
+            <h1 class="page-title">Controle de Estoque</h1>
+            <p class="page-subtitle">Gerencie produtos, quantidades e alertas de estoque</p>
+          </div>
+          <div style="display:flex;gap:var(--space-3)">
+            <button class="btn btn-secondary"><i class="fas fa-file-export"></i> Exportar</button>
+            <button class="btn btn-primary" id="addProductBtn"><i class="fas fa-plus"></i> Novo Produto</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Cards de resumo -->
+      <div class="stats-grid" style="margin-bottom:var(--space-6)">
+        <div class="stat-card">
+          <div class="stat-icon icon-blue"><i class="fas fa-boxes-stacked"></i></div>
+          <div class="stat-info"><div class="stat-label">Total de Produtos</div><div class="stat-value">—</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon icon-green"><i class="fas fa-check-circle"></i></div>
+          <div class="stat-info"><div class="stat-label">Em Estoque</div><div class="stat-value">—</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon icon-yellow"><i class="fas fa-triangle-exclamation"></i></div>
+          <div class="stat-info"><div class="stat-label">Estoque Baixo</div><div class="stat-value">—</div></div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon icon-red"><i class="fas fa-circle-exclamation"></i></div>
+          <div class="stat-info"><div class="stat-label">Crítico</div><div class="stat-value">—</div></div>
+        </div>
+      </div>
+
+      <!-- Tabela -->
+      <div class="card">
+
+        <!-- Filtros -->
+        <div class="toolbar">
+          <div class="search-box">
+            <i class="fas fa-magnifying-glass"></i>
+            <input type="text" id="estoqueSearch" class="search-input" placeholder="Buscar produto ou SKU..." />
+          </div>
+
+          <select id="filterStatus" class="filter-select">
+            <option value="">Todos os status</option>
+            <option value="estoque">Em estoque</option>
+            <option value="baixo">Estoque baixo</option>
+            <option value="critico">Crítico</option>
+          </select>
+
+          <select id="filterCategory" class="filter-select">
+            <option value="">Todas as categorias</option>
+            <option value="Analgesicos">Analgésicos</option>
+            <option value="Higiene">Higiene</option>
+            <option value="Pomadas">Pomadas</option>
+            <option value="Vitaminas">Vitaminas</option>
+            <option value="Perfumaria">Perfumaria</option>
+          </select>
+        </div>
+
+        <!-- Tabela gerada por JS -->
+        <div class="table-wrapper">
+          <table class="data-table" id="estoqueTable">
+            <thead>
+              <tr>
+                <th>Produto</th>
+                <th>Categoria</th>
+                <th>Preço</th>
+                <th>Estoque</th>
+                <th>Status</th>
+                <th>Última atualização</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- preenchido pelo estoque.js -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Paginação -->
+        <div class="pagination">
+          <span class="pagination-info" id="paginationInfo">Carregando...</span>
+          <div class="pagination-controls" id="paginationControls"></div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Modal: Adicionar Produto -->
+<div class="modal-overlay" id="addProductModal">
+  <div class="modal">
+    <div class="modal-header">
+      <h3 class="modal-title">Adicionar Produto</h3>
+      <button class="modal-close" onclick="App.Modal.close('addProductModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <form id="addProductForm">
+        <div style="display:flex;flex-direction:column;gap:var(--space-5)">
+          <div class="form-group">
+            <label class="form-label">Nome do Produto <span>*</span></label>
+            <div class="input-wrapper"><i class="fas fa-box input-icon"></i><input type="text" class="form-input has-icon" placeholder="Ex: Dipirona 500mg" required /></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4)">
+            <div class="form-group">
+              <label class="form-label">Preço <span>*</span></label>
+              <div class="input-wrapper"><i class="fas fa-dollar-sign input-icon"></i><input type="number" step=".01" class="form-input has-icon" placeholder="0,00" required /></div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Quantidade <span>*</span></label>
+              <div class="input-wrapper"><i class="fas fa-hashtag input-icon"></i><input type="number" class="form-input has-icon" placeholder="0" required /></div>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Categoria</label>
+            <select class="form-input form-select">
+              <option value="Analgesicos">Analgésicos</option>
+              <option value="Higiene">Higiene</option>
+              <option value="Pomadas">Pomadas</option>
+              <option value="Vitaminas">Vitaminas</option>
+              <option value="Perfumaria">Perfumaria</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">SKU / Código</label>
+            <div class="input-wrapper"><i class="fas fa-barcode input-icon"></i><input type="text" class="form-input has-icon" placeholder="SKU-XXX" /></div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="App.Modal.close('addProductModal')">Cancelar</button>
+      <button class="btn btn-primary" onclick="document.getElementById('addProductForm').dispatchEvent(new Event('submit'))">
+        <i class="fas fa-check"></i> Salvar
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container"></div>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/sidebar.js"></script>
+<script src="../assets/js/estoque.js"></script>
+</body>
+</html>

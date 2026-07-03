@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BioSaúde — Pedidos</title>
+  <link rel="icon" type="image/png" href="../assets/img/logo.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="../assets/css/reset.css" />
+  <link rel="stylesheet" href="../assets/css/variables.css" />
+  <link rel="stylesheet" href="../assets/css/global.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/sidebar.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard.css" />
+  <link rel="stylesheet" href="../assets/css/estoque.css" />
+  <link rel="stylesheet" href="../assets/css/responsive.css" />
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar">
+    <button class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-chevron-left"></i></button>
+    <div class="sidebar-logo"><img src="../assets/img/logo.png" alt="BioSaúde" class="sidebar-logo-img" /><div class="sidebar-logo-text"><span class="sidebar-logo-name">BioSaúde</span><span class="sidebar-logo-tagline">Gestão Farmacêutica</span></div></div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Principal</div>
+      <a href="dashboard.html" class="nav-item" data-page="dashboard" data-tooltip="Dashboard"><i class="fas fa-chart-pie nav-item-icon"></i><span class="nav-item-label">Dashboard</span></a>
+      <a href="catalogo.html" class="nav-item" data-page="catalogo" data-tooltip="Catálogo"><i class="fas fa-store nav-item-icon"></i><span class="nav-item-label">Catálogo</span></a>
+      <a href="pedidos.html" class="nav-item active" data-page="pedidos" data-tooltip="Pedidos"><i class="fas fa-bag-shopping nav-item-icon"></i><span class="nav-item-label">Pedidos</span><span class="nav-badge">3</span></a>
+      <div class="sidebar-section-label nav-admin-only">Administração</div>
+      <a href="estoque.html" class="nav-item nav-admin-only" data-page="estoque" data-tooltip="Estoque"><i class="fas fa-boxes-stacked nav-item-icon"></i><span class="nav-item-label">Estoque</span></a>
+      <a href="usuarios.html" class="nav-item nav-admin-only" data-page="usuarios" data-tooltip="Usuários"><i class="fas fa-users nav-item-icon"></i><span class="nav-item-label">Usuários</span></a>
+      <div class="sidebar-section-label">Conta</div>
+      <a href="perfil.html" class="nav-item" data-page="perfil" data-tooltip="Perfil"><i class="fas fa-circle-user nav-item-icon"></i><span class="nav-item-label">Perfil</span></a>
+      <button class="nav-item" data-action="logout" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;"><i class="fas fa-right-from-bracket nav-item-icon"></i><span class="nav-item-label">Sair</span></button>
+    </nav>
+    <div class="sidebar-footer"><div class="sidebar-user"><div class="avatar avatar-sm">U</div><div class="sidebar-user-info"><div class="sidebar-user-name">Usuário</div><div class="sidebar-user-role">ADM</div></div></div></div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="main-content" id="mainContent">
+    <header class="navbar" id="navbar">
+      <div class="navbar-left">
+        <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+        <div class="navbar-search"><i class="fas fa-magnifying-glass"></i><input type="text" placeholder="Buscar no sistema..." /></div>
+      </div>
+      <div class="navbar-right">
+        <button class="notif-btn"><i class="fas fa-bell"></i><span class="notif-dot"></span></button>
+        <div class="navbar-user"><div class="navbar-user-info"><div class="navbar-user-name">Usuário</div><div class="navbar-user-role">ADM</div></div><div class="avatar">U</div></div>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="page-header">
+        <div class="page-header-row">
+          <div><h1 class="page-title">Pedidos</h1><p class="page-subtitle">Gerencie e acompanhe todos os pedidos</p></div>
+          <div style="display:flex;gap:var(--space-3)">
+            <button class="btn btn-secondary"><i class="fas fa-file-export"></i> Exportar</button>
+            <button class="btn btn-primary"><i class="fas fa-plus"></i> Novo Pedido</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid" style="margin-bottom:var(--space-6)">
+        <div class="stat-card"><div class="stat-icon icon-blue"><i class="fas fa-bag-shopping"></i></div><div class="stat-info"><div class="stat-label">Total de Pedidos</div><div class="stat-value">384</div></div></div>
+        <div class="stat-card"><div class="stat-icon icon-yellow"><i class="fas fa-clock"></i></div><div class="stat-info"><div class="stat-label">Processando</div><div class="stat-value">12</div></div></div>
+        <div class="stat-card"><div class="stat-icon icon-cyan"><i class="fas fa-truck"></i></div><div class="stat-info"><div class="stat-label">Enviados</div><div class="stat-value">31</div></div></div>
+        <div class="stat-card"><div class="stat-icon icon-green"><i class="fas fa-circle-check"></i></div><div class="stat-info"><div class="stat-label">Entregues</div><div class="stat-value">338</div></div></div>
+      </div>
+
+      <div class="card">
+        <div class="toolbar">
+          <div class="search-box"><i class="fas fa-magnifying-glass"></i><input type="text" id="pedidosSearch" class="search-input" placeholder="Buscar pedido ou cliente..." /></div>
+          <select class="filter-select">
+            <option value="">Todos os status</option>
+            <option>Processando</option><option>Enviado</option><option>Entregue</option><option>Cancelado</option>
+          </select>
+          <select class="filter-select"><option>Todos os períodos</option><option>Hoje</option><option>Esta semana</option><option>Este mês</option></select>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="data-table" id="pedidosTable">
+            <thead>
+              <tr>
+                <th>Pedido</th>
+                <th>Cliente</th>
+                <th>Produtos</th>
+                <th>Data</th>
+                <th>Valor</th>
+                <th>Status</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-primary">#00384</td>
+                <td><div class="table-avatar"><div class="avatar avatar-sm">M</div><div><div style="color:var(--text-primary);font-weight:500">Maria Fernanda S.</div><div style="font-size:11px;color:var(--text-muted)">maria@email.com</div></div></div></td>
+                <td>1 Million Parfum</td>
+                <td style="color:var(--text-muted)">29/06/2025</td>
+                <td style="font-weight:700;color:var(--text-primary)">R$ 289,90</td>
+                <td><span class="badge badge-green"><span class="badge-dot"></span>Entregue</span></td>
+                <td><div class="table-actions"><button class="btn btn-ghost btn-icon-sm" data-action="view-pedido" data-id="384" data-tooltip="Ver detalhes"><i class="fas fa-eye"></i></button><button class="btn btn-ghost btn-icon-sm" data-tooltip="Editar"><i class="fas fa-pen"></i></button></div></td>
+              </tr>
+              <tr>
+                <td class="text-primary">#00383</td>
+                <td><div class="table-avatar"><div class="avatar avatar-sm">J</div><div><div style="color:var(--text-primary);font-weight:500">João Paulo Melo</div><div style="font-size:11px;color:var(--text-muted)">joao@email.com</div></div></div></td>
+                <td>Dipirona + Ibuprofeno</td>
+                <td style="color:var(--text-muted)">29/06/2025</td>
+                <td style="font-weight:700;color:var(--text-primary)">R$ 64,70</td>
+                <td><span class="badge badge-blue"><span class="badge-dot"></span>Enviado</span></td>
+                <td><div class="table-actions"><button class="btn btn-ghost btn-icon-sm" data-action="view-pedido" data-id="383" data-tooltip="Ver detalhes"><i class="fas fa-eye"></i></button><button class="btn btn-ghost btn-icon-sm" data-tooltip="Editar"><i class="fas fa-pen"></i></button></div></td>
+              </tr>
+              <tr>
+                <td class="text-primary">#00382</td>
+                <td><div class="table-avatar"><div class="avatar avatar-sm">A</div><div><div style="color:var(--text-primary);font-weight:500">Ana Beatriz Lima</div><div style="font-size:11px;color:var(--text-muted)">ana@email.com</div></div></div></td>
+                <td>212 VIP + Malbec Blue</td>
+                <td style="color:var(--text-muted)">28/06/2025</td>
+                <td style="font-weight:700;color:var(--text-primary)">R$ 432,50</td>
+                <td><span class="badge badge-yellow"><span class="badge-dot"></span>Processando</span></td>
+                <td><div class="table-actions"><button class="btn btn-ghost btn-icon-sm" data-action="view-pedido" data-id="382" data-tooltip="Ver detalhes"><i class="fas fa-eye"></i></button><button class="btn btn-ghost btn-icon-sm" data-tooltip="Editar"><i class="fas fa-pen"></i></button></div></td>
+              </tr>
+              <tr>
+                <td class="text-primary">#00381</td>
+                <td><div class="table-avatar"><div class="avatar avatar-sm">C</div><div><div style="color:var(--text-primary);font-weight:500">Carlos Eduardo R.</div><div style="font-size:11px;color:var(--text-muted)">carlos@email.com</div></div></div></td>
+                <td>Vitamina C + D</td>
+                <td style="color:var(--text-muted)">28/06/2025</td>
+                <td style="font-weight:700;color:var(--text-primary)">R$ 98,00</td>
+                <td><span class="badge badge-green"><span class="badge-dot"></span>Entregue</span></td>
+                <td><div class="table-actions"><button class="btn btn-ghost btn-icon-sm" data-action="view-pedido" data-id="381" data-tooltip="Ver detalhes"><i class="fas fa-eye"></i></button><button class="btn btn-ghost btn-icon-sm" data-tooltip="Editar"><i class="fas fa-pen"></i></button></div></td>
+              </tr>
+              <tr>
+                <td class="text-primary">#00380</td>
+                <td><div class="table-avatar"><div class="avatar avatar-sm">P</div><div><div style="color:var(--text-primary);font-weight:500">Patrícia Sousa</div><div style="font-size:11px;color:var(--text-muted)">patricia@email.com</div></div></div></td>
+                <td>Wepink Golden</td>
+                <td style="color:var(--text-muted)">27/06/2025</td>
+                <td style="font-weight:700;color:var(--text-primary)">R$ 156,30</td>
+                <td><span class="badge badge-red"><span class="badge-dot"></span>Cancelado</span></td>
+                <td><div class="table-actions"><button class="btn btn-ghost btn-icon-sm" data-action="view-pedido" data-id="380" data-tooltip="Ver detalhes"><i class="fas fa-eye"></i></button><button class="btn btn-ghost btn-icon-sm" data-tooltip="Editar"><i class="fas fa-pen"></i></button></div></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination">
+          <span class="pagination-info">Mostrando 5 de 384 pedidos</span>
+          <div class="pagination-controls">
+            <button class="page-btn" disabled><i class="fas fa-chevron-left"></i></button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <span style="color:var(--text-muted);font-size:var(--text-sm)">...</span>
+            <button class="page-btn">77</button>
+            <button class="page-btn"><i class="fas fa-chevron-right"></i></button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<!-- Pedido Detail Modal -->
+<div class="modal-overlay" id="pedidoModal">
+  <div class="modal modal-lg">
+    <div class="modal-header">
+      <h3 class="modal-title">Detalhes do Pedido</h3>
+      <button class="modal-close" onclick="App.Modal.close('pedidoModal')"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:var(--space-5);flex-wrap:wrap;gap:var(--space-4)">
+        <div>
+          <div style="font-size:var(--text-xs);color:var(--text-muted);margin-bottom:4px">NÚMERO DO PEDIDO</div>
+          <div style="font-size:var(--text-xl);font-weight:700;color:var(--text-primary)">#00383</div>
+        </div>
+        <span class="badge badge-blue" style="font-size:var(--text-sm);padding:.4rem 1rem"><span class="badge-dot"></span>Enviado</span>
+      </div>
+      <div class="order-items-list">
+        <div class="order-item">
+          <img src="../assets/img/dipirona.png" alt="Dipirona" />
+          <div class="order-item-info"><div class="order-item-name">Dipirona Monoidratada 1g</div><div class="order-item-qty">Qtd: 2</div></div>
+          <div class="order-item-price">R$ 17,80</div>
+        </div>
+        <div class="order-item">
+          <img src="../assets/img/ibuprofeno.png" alt="Ibuprofeno" />
+          <div class="order-item-info"><div class="order-item-name">Ibuprofeno 400mg</div><div class="order-item-qty">Qtd: 3</div></div>
+          <div class="order-item-price">R$ 37,50</div>
+        </div>
+      </div>
+      <div class="order-summary">
+        <div class="order-summary-row"><span>Subtotal</span><span>R$ 55,30</span></div>
+        <div class="order-summary-row"><span>Frete</span><span>R$ 9,40</span></div>
+        <div class="order-summary-row total"><span>Total</span><span>R$ 64,70</span></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="App.Modal.close('pedidoModal')">Fechar</button>
+      <button class="btn btn-primary"><i class="fas fa-print"></i> Imprimir</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container"></div>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/sidebar.js"></script>
+<script src="../assets/js/estoque.js"></script>
+</body>
+</html>

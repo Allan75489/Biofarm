@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BioSaúde — Perfil</title>
+  <link rel="icon" type="image/png" href="../assets/img/logo.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="../assets/css/reset.css" />
+  <link rel="stylesheet" href="../assets/css/variables.css" />
+  <link rel="stylesheet" href="../assets/css/global.css" />
+  <link rel="stylesheet" href="../assets/css/components.css" />
+  <link rel="stylesheet" href="../assets/css/sidebar.css" />
+  <link rel="stylesheet" href="../assets/css/dashboard.css" />
+  <link rel="stylesheet" href="../assets/css/estoque.css" />
+  <link rel="stylesheet" href="../assets/css/responsive.css" />
+</head>
+<body>
+<div class="app-layout">
+  <aside class="sidebar" id="sidebar">
+    <button class="sidebar-toggle" id="sidebarToggle"><i class="fas fa-chevron-left"></i></button>
+    <div class="sidebar-logo"><img src="../assets/img/logo.png" alt="BioSaúde" class="sidebar-logo-img" /><div class="sidebar-logo-text"><span class="sidebar-logo-name">BioSaúde</span><span class="sidebar-logo-tagline">Gestão Farmacêutica</span></div></div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Principal</div>
+      <a href="dashboard.html" class="nav-item" data-page="dashboard"><i class="fas fa-chart-pie nav-item-icon"></i><span class="nav-item-label">Dashboard</span></a>
+      <a href="catalogo.html" class="nav-item" data-page="catalogo"><i class="fas fa-store nav-item-icon"></i><span class="nav-item-label">Catálogo</span></a>
+      <a href="pedidos.html" class="nav-item" data-page="pedidos"><i class="fas fa-bag-shopping nav-item-icon"></i><span class="nav-item-label">Pedidos</span><span class="nav-badge">3</span></a>
+      <div class="sidebar-section-label nav-admin-only">Administração</div>
+      <a href="estoque.html" class="nav-item nav-admin-only" data-page="estoque"><i class="fas fa-boxes-stacked nav-item-icon"></i><span class="nav-item-label">Estoque</span></a>
+      <a href="usuarios.html" class="nav-item nav-admin-only" data-page="usuarios"><i class="fas fa-users nav-item-icon"></i><span class="nav-item-label">Usuários</span></a>
+      <div class="sidebar-section-label">Conta</div>
+      <a href="perfil.html" class="nav-item active" data-page="perfil"><i class="fas fa-circle-user nav-item-icon"></i><span class="nav-item-label">Perfil</span></a>
+      <button class="nav-item" data-action="logout" style="background:none;border:none;width:100%;text-align:left;cursor:pointer;"><i class="fas fa-right-from-bracket nav-item-icon"></i><span class="nav-item-label">Sair</span></button>
+    </nav>
+    <div class="sidebar-footer"><div class="sidebar-user"><div class="avatar avatar-sm">U</div><div class="sidebar-user-info"><div class="sidebar-user-name">Usuário</div><div class="sidebar-user-role">ADM</div></div></div></div>
+  </aside>
+  <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+  <div class="main-content" id="mainContent">
+    <header class="navbar" id="navbar">
+      <div class="navbar-left">
+        <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+        <div class="navbar-search"><i class="fas fa-magnifying-glass"></i><input type="text" placeholder="Buscar no sistema..." /></div>
+      </div>
+      <div class="navbar-right">
+        <button class="notif-btn"><i class="fas fa-bell"></i><span class="notif-dot"></span></button>
+        <div class="navbar-user"><div class="navbar-user-info"><div class="navbar-user-name">Usuário</div><div class="navbar-user-role">ADM</div></div><div class="avatar">U</div></div>
+      </div>
+    </header>
+
+    <main class="page-content">
+      <div class="page-header">
+        <h1 class="page-title">Meu Perfil</h1>
+        <p class="page-subtitle">Gerencie suas informações pessoais e segurança</p>
+      </div>
+
+      <!-- Profile header card -->
+      <div class="profile-header fade-in">
+        <div class="profile-avatar-wrapper">
+          <div class="profile-avatar">U</div>
+          <button class="avatar-edit-btn" data-tooltip="Alterar foto"><i class="fas fa-camera"></i></button>
+        </div>
+        <div class="profile-info">
+          <h2 class="profile-name-display">Usuário BioSaúde</h2>
+          <p class="profile-role-display">Administrador · Membro desde Mar 2025</p>
+          <div class="profile-stats">
+            <div class="profile-stat"><span class="profile-stat-value">384</span><span class="profile-stat-label">Pedidos</span></div>
+            <div class="profile-stat"><span class="profile-stat-value">2.891</span><span class="profile-stat-label">Clientes</span></div>
+            <div class="profile-stat"><span class="profile-stat-value">16</span><span class="profile-stat-label">Produtos</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile form -->
+      <div class="profile-grid">
+
+        <!-- Personal info -->
+        <div class="card fade-in" style="animation-delay:80ms">
+          <div class="card-header"><div class="card-title"><i class="fas fa-circle-user" style="margin-right:8px;color:var(--accent-hover)"></i>Informações Pessoais</div></div>
+          <form id="perfilForm">
+            <div style="display:flex;flex-direction:column;gap:var(--space-5)">
+              <div class="form-grid-2">
+                <div class="form-group"><label class="form-label">Nome Completo</label><div class="input-wrapper"><i class="fas fa-user input-icon"></i><input type="text" id="perfilNome" class="form-input has-icon" placeholder="Seu nome" /></div></div>
+                <div class="form-group"><label class="form-label">Telefone</label><div class="input-wrapper"><i class="fas fa-phone input-icon"></i><input type="tel" id="perfilTel" class="form-input has-icon" placeholder="(00) 00000-0000" /></div></div>
+              </div>
+              <div class="form-group"><label class="form-label">E-mail</label><div class="input-wrapper"><i class="fas fa-envelope input-icon"></i><input type="email" id="perfilEmail" class="form-input has-icon" placeholder="email@exemplo.com" /></div></div>
+              <div class="form-group"><label class="form-label">Endereço</label><div class="input-wrapper"><i class="fas fa-map-pin input-icon"></i><input type="text" id="perfilEndereco" class="form-input has-icon" placeholder="Rua, número, complemento" /></div></div>
+              <div class="form-grid-2">
+                <div class="form-group"><label class="form-label">Cidade</label><input type="text" class="form-input" placeholder="Sua cidade" /></div>
+                <div class="form-group"><label class="form-label">CEP</label><input type="text" class="form-input" placeholder="00000-000" /></div>
+              </div>
+              <button type="submit" class="btn btn-primary"><i class="fas fa-check"></i> Salvar Alterações</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Security -->
+        <div style="display:flex;flex-direction:column;gap:var(--space-5)">
+          <div class="card fade-in" style="animation-delay:160ms">
+            <div class="card-header"><div class="card-title"><i class="fas fa-shield-halved" style="margin-right:8px;color:var(--success)"></i>Segurança</div></div>
+            <form id="senhaForm">
+              <div style="display:flex;flex-direction:column;gap:var(--space-5)">
+                <div class="form-group"><label class="form-label">Senha Atual</label><div class="input-wrapper"><i class="fas fa-lock input-icon"></i><input type="password" class="form-input has-icon" placeholder="••••••••" /></div></div>
+                <div class="form-group">
+                  <label class="form-label">Nova Senha</label>
+                  <div class="input-wrapper"><i class="fas fa-lock-open input-icon"></i><input type="password" id="newPassword" class="form-input has-icon" placeholder="Mínimo 8 caracteres" /></div>
+                  <div class="password-strength">
+                    <div class="strength-bar"><div class="strength-fill" id="strengthBar"></div></div>
+                    <span class="strength-label" id="strengthLabel"></span>
+                  </div>
+                </div>
+                <div class="form-group"><label class="form-label">Confirmar Senha</label><div class="input-wrapper"><i class="fas fa-lock input-icon"></i><input type="password" id="confirmPassword" class="form-input has-icon" placeholder="Repita a nova senha" /></div></div>
+                <button type="submit" class="btn btn-secondary"><i class="fas fa-key"></i> Alterar Senha</button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Account info -->
+          <div class="card fade-in" style="animation-delay:240ms">
+            <div class="card-header"><div class="card-title"><i class="fas fa-info-circle" style="margin-right:8px;color:var(--info)"></i>Informações da Conta</div></div>
+            <div style="display:flex;flex-direction:column;gap:var(--space-4)">
+              <div style="display:flex;justify-content:space-between;font-size:var(--text-sm)">
+                <span style="color:var(--text-muted)">Perfil de acesso</span>
+                <span class="badge badge-blue">Administrador</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:var(--text-sm)">
+                <span style="color:var(--text-muted)">Status</span>
+                <span class="badge badge-green"><span class="badge-dot"></span>Ativo</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:var(--text-sm)">
+                <span style="color:var(--text-muted)">Membro desde</span>
+                <span style="color:var(--text-primary);font-weight:500">Março de 2025</span>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:var(--text-sm)">
+                <span style="color:var(--text-muted)">Último acesso</span>
+                <span style="color:var(--text-primary);font-weight:500">Hoje, 09:34</span>
+              </div>
+              <hr class="divider" style="margin:var(--space-2) 0" />
+              <button class="btn btn-danger" style="width:100%;justify-content:center" onclick="if(confirm('Sair de todas as sessões?')){App.Toast.warning('Sessões encerradas','Você foi desconectado de todos os dispositivos.')}">
+                <i class="fas fa-right-from-bracket"></i> Encerrar Todas as Sessões
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /profile-grid -->
+    </main>
+  </div>
+</div>
+
+<div class="toast-container"></div>
+<script src="../assets/js/app.js"></script>
+<script src="../assets/js/sidebar.js"></script>
+<script src="../assets/js/estoque.js"></script>
+</body>
+</html>
