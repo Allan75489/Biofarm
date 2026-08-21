@@ -1,8 +1,3 @@
-/* ================================================
-   ESTOQUE.JS - BioSaúde | Tabela dinâmica com
-   paginação, filtros e busca reais
-   ================================================ */
-
 'use strict';
 
 /* ── Dataset completo (substituir por API futuramente) ── */
@@ -27,11 +22,23 @@ const ESTOQUE = [
 
 /* ── Imagens por id ── */
 const IMGS = {
-  1:'dipirona.png', 2:'ibuprofeno.png', 3:'paracetamol.png',
-  4:'alcool-gel.png', 5:'sabonete.png', 6:'bepantol.webp',
-  7:'nebacetin.png', 8:'vitamina-c.png', 9:'vitamina-d.png',
-  10:'1million.jpg', 11:'212vip.webp', 12:'malbec-blue.jpeg',
-  13:'floral-fem.jpeg', 14:'wepink-golden.webp', 15:'wepink-green.webp', 16:'wepink-red.webp'
+  1: 'dipirona.png',
+  2: 'ibuprofeno.png',
+  3: 'paracetamol.png',
+  4: 'alcool-gel.png',
+  5: 'sabonete.png',
+  6: 'bepantol.webp',
+  7: 'nebacetin.png',
+  8: 'vitamina-c.png',
+  9: 'vitamina-d.png',
+
+  10: 'Perfumes/1 Million Parfum 100ml.png',
+  11: 'Perfumes/212vip.png',
+  12: 'Perfumes/malbec-blue.png',
+  13: 'Perfumes/floral-fem.png',
+  14: 'Perfumes/wepink-golden.png',
+  15: 'Perfumes/wepink-green.png',
+  16: 'Perfumes/wepink-red.png'
 };
 
 /* ── Cores dos badges de categoria ── */
