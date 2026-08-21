@@ -1,153 +1,60 @@
-# 💊 BioSaúde - Frontend
+# 💊 BioSaúde
 
-Este diretório contém toda a estrutura do **frontend** da aplicação BioSaúde, responsável pela interface do usuário e interações no navegador.
+Sistema web para gestão de uma farmácia/loja de produtos de saúde, com login, dashboard, controle de estoque, catálogo de produtos, pedidos e gerenciamento de usuários.
 
----
-
-## 📁 Estrutura de Pastas
+## 📁 Estrutura
 
 ```
 frontend/
-│
-├── assets/            # Imagens utilizadas no projeto (produtos, perfumaria, etc.)
-│
-├── css/               # Arquivos de estilização
-│   ├── home.css
-│   ├── Medicamentos.css
-│   ├── Ofertas.css
-│   └── Perfumaria.css
-│
-├── icons/             # Ícones e imagens auxiliares
-│   └── img/
-│
-├── js/                # Scripts JavaScript
-│   ├── Home.js
-│   ├── Medicamentos.js
-│   ├── Ofertas.js
-│   └── Perfumaria.js
-│
-├── pages/             # Páginas HTML do sistema
-│   ├── Home.html
-│   ├── Medicamentos.html
-│   ├── Ofertas.html
-│   └── Perfumaria.html
-│
-└── README.md          # Documentação do frontend
+├── assets/
+│   ├── css/        # Estilos (global, sidebar, dashboard, estoque, catálogo, login...)
+│   ├── img/         # Imagens dos produtos
+│   └── js/          # Lógica de cada página
+├── components/
+│   └── sidebar.html # Menu lateral reutilizável
+├── pages/
+│   ├── login.html
+│   ├── dashboard.html
+│   ├── estoque.html
+│   ├── catalogo.html
+│   ├── pedidos.html
+│   ├── perfil.html
+│   └── usuarios.html
+└── index.html        # Redireciona para a tela de login
 ```
 
----
+## 🚀 Funcionalidades
 
-## 🚀 Funcionalidades Implementadas
+- **Login** — autenticação de acesso ao sistema
+- **Dashboard** — visão geral com indicadores do negócio
+- **Estoque** — controle de produtos e quantidades disponíveis
+- **Catálogo** — listagem e organização dos produtos à venda
+- **Pedidos** — acompanhamento dos pedidos realizados
+- **Usuários** — gerenciamento de contas do sistema
+- **Perfil** — dados da conta do usuário logado
 
-### 🏠 Home
+## 🎨 Tecnologias
 
-* Navegação entre páginas
-* Scroll suave
-* Destaque de produtos
-* Integração com sistema de carrinho
+- HTML5
+- CSS3
+- JavaScript (Vanilla JS)
 
----
+## ⚡ Como executar
 
-### 💊 Medicamentos
+1. Abra a pasta do projeto no VS Code (ou editor de preferência)
+2. Abra o arquivo `frontend/index.html`
+3. Utilize uma extensão como **Live Server** para rodar o projeto no navegador
 
-* 🔎 Busca dinâmica por nome
-* 🧩 Filtro por categoria:
+## 🔮 Próximos passos
 
-  * Analgésicos
-  * Vitaminas
-  * Pomadas
-  * Higiene
-* ❤️ Sistema de favoritos
-* 🛒 Adição ao carrinho
-
----
-
-### 🔥 Ofertas
-
-* 🔎 Busca de produtos em promoção
-* 💸 Exibição de preço original e com desconto
-* 🛒 Adição ao carrinho
-
----
-
-### 💄 Perfumaria
-
-* Listagem de produtos
-* 🛒 Adição ao carrinho
-* ✨ Animações nos cards
-
----
-
-## 🛒 Sistema de Carrinho
-
-O projeto utiliza o **localStorage** para armazenar os produtos adicionados ao carrinho.
-
-### 📦 Estrutura do produto:
-
-```json
-{
-  "nome": "Produto",
-  "preco": "R$ 00,00"
-}
-```
-
-### ✅ Funcionalidades:
-
-* Persistência de dados no navegador
-* Compartilhado entre todas as páginas
-* Adição de produtos via botão "Comprar"
-
----
-
-## 🎨 Tecnologias Utilizadas
-
-* HTML5
-* CSS3
-* JavaScript (Vanilla JS)
-* LocalStorage (Web API)
-
----
-
-## 🧠 Organização do Código
-
-O projeto segue uma separação clara de responsabilidades:
-
-* **HTML** → Estrutura
-* **CSS** → Estilização
-* **JavaScript** → Lógica e interatividade
-
-Cada página possui seu próprio arquivo JS para manter o código organizado e escalável.
-
----
-
-## ⚡ Como Executar o Projeto
-
-1. Abra o projeto no VS Code
-2. Navegue até a pasta `pages`
-3. Abra o arquivo `Home.html`
-4. Utilize uma extensão como **Live Server** para rodar o projeto
-
----
-
-## 🔮 Melhorias Futuras
-
-* 🛒 Página de carrinho completa
-* ❌ Remoção de produtos do carrinho
-* 💰 Cálculo do total da compra
-* 🔐 Sistema de login/cadastro
-* 🌐 Integração com backend (Node.js)
-* 📦 Banco de dados
-
----
+- Integração com backend e banco de dados
+- Autenticação real de usuários
+- Persistência de estoque e pedidos em servidor
 
 ## 👨‍💻 Autor
 
-Projeto desenvolvido por Allan Gustavo como prática de desenvolvimento frontend e simulação de e-commerce.
+Projeto desenvolvido por **Allan Gustavo**.
 
----
+## 📄 Licença
 
-## 📌 Status do Projeto
-
-🚧 Em desenvolvimento
-✅ Frontend funcional
-🔜 Evoluindo para aplicação completa
+Distribuído sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
