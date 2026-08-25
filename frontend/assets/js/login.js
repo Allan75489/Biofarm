@@ -1,5 +1,6 @@
 /* ================================================
    LOGIN.JS - BioSaúde
+   Autenticação real via API (Express + MySQL)
    ================================================ */
 
 'use strict';
@@ -79,34 +80,46 @@ document.addEventListener('DOMContentLoaded', () => {
     setLoading(true);
 
     try {
-      // ── Simulação de login (substitua pela chamada real da API) ──
-      await new Promise(r => setTimeout(r, 1200));
+      // Chamada real ao backend: POST /api/auth/login (auth.routes.js -> auth.controller.js -> auth.service.js)
+      // Feita com fetch() direto (não com App.apiFetch) porque apiFetch trata QUALQUER 401
+      // como "sessão expirada" e redireciona para o login — o que quebraria o fluxo de
+      // "senha errada" aqui, já que estamos justamente na tela de login.
+      const res = await fetch(`${API_BASE}/auth/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: userInput.value.trim(),
+          senha: passInput.value
+        })
+      });
 
-      // Todos os usuários logados são ADMIN neste sistema
-      const fakeUser = {
-        id:    1,
-        nome:  userInput.value,
-        email: userInput.value + '@biosaude.com',
-        perfil: 'ADMIN'
+      const data = await res.json();
+
+      if (!res.ok) {
+        // Backend responde 401 com { message: 'Credenciais inválidas.' }
+        // ou 422 com { message: 'Dados inválidos.', issues: [...] } se o e-mail for malformado
+        throw new Error(data.message || 'Credenciais inválidas.');
+      }
+
+      // data = { token, usuario: { id, name, email, role } }
+      // Normaliza para o formato { nome, perfil } que o resto do front-end
+      // (app.js, dashboard.js, sidebar.js) já espera, sem precisar tocar nesses arquivos.
+      const usuario = {
+        id: data.usuario.id,
+        nome: data.usuario.name,
+        email: data.usuario.email,
+        perfil: data.usuario.role // 'ADMIN' | 'USER'
       };
-      const fakeToken = 'eyJ_FAKE_TOKEN_' + Date.now();
 
-      // ── Real API call example: ──
-      // const data = await window.App.apiFetch('/auth/login', {
-      //   method: 'POST',
-      //   body: JSON.stringify({ login: userInput.value, senha: passInput.value })
-      // });
-      // window.App.Auth.setAuth(data.token, data.usuario);
-
-      window.App.Auth.setAuth(fakeToken, fakeUser);
+      window.App.Auth.setAuth(data.token, usuario);
 
       if (rememberMe?.checked) {
-        localStorage.setItem('bs_remember', userInput.value);
+        localStorage.setItem('bs_remember', userInput.value.trim());
       } else {
         localStorage.removeItem('bs_remember');
       }
 
-      window.App.Toast.success('Bem-vindo!', `Olá, ${fakeUser.nome}!`);
+      window.App.Toast.success('Bem-vindo!', `Olá, ${usuario.nome}!`);
 
       setTimeout(() => {
         window.location.href = 'dashboard.html';

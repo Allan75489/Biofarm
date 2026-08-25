@@ -114,11 +114,6 @@
 
           <select id="filterCategory" class="filter-select">
             <option value="">Todas as categorias</option>
-            <option value="Analgesicos">Analgésicos</option>
-            <option value="Higiene">Higiene</option>
-            <option value="Pomadas">Pomadas</option>
-            <option value="Vitaminas">Vitaminas</option>
-            <option value="Perfumaria">Perfumaria</option>
           </select>
         </div>
 
@@ -153,43 +148,40 @@
   </div>
 </div>
 
-<!-- Modal: Adicionar Produto -->
+<!-- Modal: Adicionar/Editar Produto -->
 <div class="modal-overlay" id="addProductModal">
   <div class="modal">
     <div class="modal-header">
-      <h3 class="modal-title">Adicionar Produto</h3>
+      <h3 class="modal-title" id="productModalTitle">Adicionar Produto</h3>
       <button class="modal-close" onclick="App.Modal.close('addProductModal')"><i class="fas fa-times"></i></button>
     </div>
     <div class="modal-body">
       <form id="addProductForm">
+        <input type="hidden" id="productId" value="" />
         <div style="display:flex;flex-direction:column;gap:var(--space-5)">
           <div class="form-group">
             <label class="form-label">Nome do Produto <span>*</span></label>
-            <div class="input-wrapper"><i class="fas fa-box input-icon"></i><input type="text" class="form-input has-icon" placeholder="Ex: Dipirona 500mg" required /></div>
+            <div class="input-wrapper"><i class="fas fa-box input-icon"></i><input type="text" id="productName" class="form-input has-icon" placeholder="Ex: Dipirona 500mg" required /></div>
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4)">
             <div class="form-group">
               <label class="form-label">Preço <span>*</span></label>
-              <div class="input-wrapper"><i class="fas fa-dollar-sign input-icon"></i><input type="number" step=".01" class="form-input has-icon" placeholder="0,00" required /></div>
+              <div class="input-wrapper"><i class="fas fa-dollar-sign input-icon"></i><input type="number" step=".01" min="0" id="productPrice" class="form-input has-icon" placeholder="0,00" required /></div>
             </div>
             <div class="form-group">
               <label class="form-label">Quantidade <span>*</span></label>
-              <div class="input-wrapper"><i class="fas fa-hashtag input-icon"></i><input type="number" class="form-input has-icon" placeholder="0" required /></div>
+              <div class="input-wrapper"><i class="fas fa-hashtag input-icon"></i><input type="number" min="0" id="productQuantity" class="form-input has-icon" placeholder="0" required /></div>
             </div>
           </div>
           <div class="form-group">
             <label class="form-label">Categoria</label>
-            <select class="form-input form-select">
-              <option value="Analgesicos">Analgésicos</option>
-              <option value="Higiene">Higiene</option>
-              <option value="Pomadas">Pomadas</option>
-              <option value="Vitaminas">Vitaminas</option>
-              <option value="Perfumaria">Perfumaria</option>
+            <select id="productCategory" class="form-input form-select">
+              <option value="">Carregando categorias...</option>
             </select>
           </div>
           <div class="form-group">
-            <label class="form-label">SKU / Código</label>
-            <div class="input-wrapper"><i class="fas fa-barcode input-icon"></i><input type="text" class="form-input has-icon" placeholder="SKU-XXX" /></div>
+            <label class="form-label">SKU / Código <span>*</span></label>
+            <div class="input-wrapper"><i class="fas fa-barcode input-icon"></i><input type="text" id="productSku" class="form-input has-icon" placeholder="SKU-XXX" required /></div>
           </div>
         </div>
       </form>

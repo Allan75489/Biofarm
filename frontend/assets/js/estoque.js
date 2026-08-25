@@ -1,160 +1,180 @@
 'use strict';
 
-/* ── Dataset completo (substituir por API futuramente) ── */
-const ESTOQUE = [
-  { id:1,  sku:'SKU-001', name:'Dipirona Monoidratada 1g',   category:'Analgesicos', price:8.90,   stock:142, updated:'29/06/2025' },
-  { id:2,  sku:'SKU-002', name:'Ibuprofeno 400mg',            category:'Analgesicos', price:12.50,  stock:87,  updated:'28/06/2025' },
-  { id:3,  sku:'SKU-003', name:'Paracetamol 750mg',           category:'Analgesicos', price:6.90,   stock:210, updated:'27/06/2025' },
-  { id:4,  sku:'SKU-004', name:'Álcool Gel 70% 500ml',        category:'Higiene',     price:14.90,  stock:56,  updated:'29/06/2025' },
-  { id:5,  sku:'SKU-005', name:'Sabonete Antisséptico',       category:'Higiene',     price:9.90,   stock:320, updated:'26/06/2025' },
-  { id:6,  sku:'SKU-006', name:'Bepantol Pomada 30g',         category:'Pomadas',     price:22.90,  stock:12,  updated:'27/06/2025' },
-  { id:7,  sku:'SKU-007', name:'Nebacetin Pomada 15g',        category:'Pomadas',     price:18.50,  stock:34,  updated:'25/06/2025' },
-  { id:8,  sku:'SKU-008', name:'Vitamina C 1000mg',           category:'Vitaminas',   price:29.90,  stock:95,  updated:'26/06/2025' },
-  { id:9,  sku:'SKU-009', name:'Vitamina D 2000UI',           category:'Vitaminas',   price:34.90,  stock:78,  updated:'24/06/2025' },
-  { id:10, sku:'SKU-010', name:'1 Million Parfum 100ml',      category:'Perfumaria',  price:289.90, stock:8,   updated:'25/06/2025' },
-  { id:11, sku:'SKU-011', name:'212 VIP Black EDP',           category:'Perfumaria',  price:319.90, stock:15,  updated:'23/06/2025' },
-  { id:12, sku:'SKU-012', name:'Malbec Blue 100ml',           category:'Perfumaria',  price:129.90, stock:42,  updated:'22/06/2025' },
-  { id:13, sku:'SKU-013', name:'Perfume Floral Feminino',     category:'Perfumaria',  price:159.90, stock:27,  updated:'21/06/2025' },
-  { id:14, sku:'SKU-014', name:'Wepink Golden EDP',           category:'Perfumaria',  price:99.90,  stock:3,   updated:'20/06/2025' },
-  { id:15, sku:'SKU-015', name:'Wepink Lauv Green',           category:'Perfumaria',  price:89.90,  stock:51,  updated:'19/06/2025' },
-  { id:16, sku:'SKU-016', name:'Wepink Red Passion',          category:'Perfumaria',  price:94.90,  stock:18,  updated:'18/06/2025' },
-];
+/* ================================================
+   ESTOQUE.JS - BioSaúde
+   Integração real com a API (Express + MySQL)
+   ================================================ */
 
-/* ── Imagens por id ── */
-const IMGS = {
-  1: 'dipirona.png',
-  2: 'ibuprofeno.png',
-  3: 'paracetamol.png',
-  4: 'alcool-gel.png',
-  5: 'sabonete.png',
-  6: 'bepantol.webp',
-  7: 'nebacetin.png',
-  8: 'vitamina-c.png',
-  9: 'vitamina-d.png',
-
-  10: 'Perfumes/1 Million Parfum 100ml.png',
-  11: 'Perfumes/212vip.png',
-  12: 'Perfumes/malbec-blue.png',
-  13: 'Perfumes/floral-fem.png',
-  14: 'Perfumes/wepink-golden.png',
-  15: 'Perfumes/wepink-green.png',
-  16: 'Perfumes/wepink-red.png'
-};
-
-/* ── Cores dos badges de categoria ── */
-const CAT_BADGE = {
-  Analgesicos:'badge-blue', Higiene:'badge-green',
-  Pomadas:'badge-purple',   Vitaminas:'badge-cyan', Perfumaria:'badge-yellow'
-};
-
-/* ── Estado da tabela ── */
+/* ── Estado ── */
 const state = {
-  query:    '',
-  status:   '',   // '' | 'estoque' | 'baixo' | 'critico'
-  category: '',
-  page:     1,
-  perPage:  6,
+  query:      '',
+  status:     '',   // '' | 'estoque' | 'baixo' | 'critico'
+  categoryId: '',
+  page:       1,
+  perPage:    6,
 };
 
-/* ── Classificar status por quantidade ── */
-function getStatus(stock) {
-  if (stock <= 10)  return { key:'critico',  label:'Crítico',       cls:'badge-red',    bar:'low',    pct: Math.max(2, Math.round(stock/320*100)) };
-  if (stock <= 60)  return { key:'baixo',    label:'Estoque baixo', cls:'badge-yellow', bar:'medium', pct: Math.round(stock/320*100) };
-  return               { key:'estoque',  label:'Em estoque',    cls:'badge-green',  bar:'high',   pct: Math.round(stock/320*100) };
+let categories = [];        // [{id, name}]
+
+/* Mapa de status do front <-> valores aceitos pela API (stockStatus.js do backend) */
+const STATUS_API = { estoque: 'EM_ESTOQUE', baixo: 'BAIXO', critico: 'CRITICO' };
+const STATUS_UI  = { EM_ESTOQUE: 'estoque', BAIXO: 'baixo', CRITICO: 'critico' };
+
+const STATUS_LABEL = {
+  estoque: { label: 'Em estoque',    cls: 'badge-green',  bar: 'high'   },
+  baixo:   { label: 'Estoque baixo', cls: 'badge-yellow', bar: 'medium' },
+  critico: { label: 'Crítico',       cls: 'badge-red',    bar: 'low'    },
+};
+
+const CAT_BADGE_PALETTE = ['badge-blue', 'badge-green', 'badge-purple', 'badge-cyan', 'badge-yellow', 'badge-gray'];
+function catBadgeClass(categoryId) {
+  if (!categoryId) return 'badge-gray';
+  return CAT_BADGE_PALETTE[categoryId % CAT_BADGE_PALETTE.length];
 }
 
-/* ── Filtrar dataset ── */
-function filtered() {
-  return ESTOQUE.filter(p => {
-    const s = getStatus(p.stock);
-    const matchQ   = !state.query    || p.name.toLowerCase().includes(state.query) || p.sku.toLowerCase().includes(state.query);
-    const matchS   = !state.status   || s.key === state.status;
-    const matchCat = !state.category || p.category === state.category;
-    return matchQ && matchS && matchCat;
-  });
+/* Réplica local da regra de negócio do backend (utils/stockStatus.js: <=10 crítico, <=60 baixo, senão em estoque) */
+function getStatusFromQuantity(q) {
+  if (q <= 10) return 'CRITICO';
+  if (q <= 60) return 'BAIXO';
+  return 'EM_ESTOQUE';
+}
+
+/* ── Carrega categorias do banco e popula os <select> ── */
+async function loadCategories() {
+  try {
+    categories = await window.App.apiFetch('/categories');
+    if (!categories) return;
+
+    const filterSelect = document.getElementById('filterCategory');
+    if (filterSelect) {
+      filterSelect.innerHTML = '<option value="">Todas as categorias</option>' +
+        categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+    }
+
+    const modalSelect = document.getElementById('productCategory');
+    if (modalSelect) {
+      modalSelect.innerHTML = '<option value="">Sem categoria</option>' +
+        categories.map(c => `<option value="${c.id}">${c.name}</option>`).join('');
+    }
+  } catch (err) {
+    window.App.Toast.error('Erro ao carregar categorias', err.message);
+  }
+}
+
+/* ── Busca produtos+estoque na API (GET /api/stock já traz produto + status) ── */
+let currentData = [];
+let currentTotal = 0;
+
+async function fetchStock() {
+  const params = new URLSearchParams();
+  if (state.query) params.set('search', state.query);
+  if (state.status) params.set('status', STATUS_API[state.status]);
+  if (state.categoryId) params.set('categoryId', state.categoryId);
+  params.set('page', state.page);
+  params.set('perPage', state.perPage);
+
+  try {
+    const result = await window.App.apiFetch(`/stock?${params.toString()}`);
+    if (!result) return;
+    currentData = result.data;
+    currentTotal = result.total;
+  } catch (err) {
+    window.App.Toast.error('Erro ao carregar estoque', err.message);
+    currentData = [];
+    currentTotal = 0;
+  }
+}
+
+async function fetchSummary() {
+  try {
+    const s = await window.App.apiFetch('/stock/summary');
+    if (!s) return;
+    const els = document.querySelectorAll('.stat-value');
+    if (els[0]) els[0].textContent = s.total ?? 0;
+    if (els[1]) els[1].textContent = s.em_estoque ?? 0;
+    if (els[2]) els[2].textContent = s.baixo ?? 0;
+    if (els[3]) els[3].textContent = s.critico ?? 0;
+  } catch (err) {
+    console.error('[Estoque] erro ao buscar resumo', err);
+  }
 }
 
 /* ── Renderizar tabela + paginação ── */
-function render() {
-  const data     = filtered();
-  const total    = data.length;
-  const pages    = Math.max(1, Math.ceil(total / state.perPage));
-  state.page     = Math.min(state.page, pages);
-  const start    = (state.page - 1) * state.perPage;
-  const pageData = data.slice(start, start + state.perPage);
+async function render() {
+  await fetchStock();
 
-  /* tbody */
+  const pages = Math.max(1, Math.ceil(currentTotal / state.perPage));
+  state.page = Math.min(state.page, pages);
+
   const tbody = document.querySelector('#estoqueTable tbody');
   if (!tbody) return;
 
-  if (pageData.length === 0) {
+  if (currentData.length === 0) {
     tbody.innerHTML = `
       <tr><td colspan="7" style="text-align:center;padding:3rem;color:var(--text-muted)">
         <i class="fas fa-box-open" style="font-size:2rem;display:block;margin-bottom:.75rem"></i>
         Nenhum produto encontrado para os filtros selecionados.
       </td></tr>`;
   } else {
-    tbody.innerHTML = pageData.map(p => {
-      const st  = getStatus(p.stock);
-      const img = `../assets/img/${IMGS[p.id] || 'logo.png'}`;
-      const cat = p.category === 'Analgesicos' ? 'Analgésicos' : p.category;
+    tbody.innerHTML = currentData.map(row => {
+      const statusKey = STATUS_UI[getStatusFromQuantity(row.quantity)];
+      const st  = STATUS_LABEL[statusKey];
+      const pct = Math.max(2, Math.min(100, Math.round((row.quantity / 320) * 100)));
+      const updated = row.updated_at ? window.App.Fmt.date(row.updated_at) : '—';
+      const catName = row.category_name || 'Sem categoria';
+
       return `
-        <tr data-id="${p.id}">
+        <tr data-id="${row.product_id}">
           <td>
             <div class="table-avatar">
-              <img src="${img}" alt="${p.name}" style="width:36px;height:36px;object-fit:contain;background:rgba(255,255,255,.05);border-radius:6px;padding:4px;border:1px solid var(--border-light)" onerror="this.src='../assets/img/logo.png'">
+              <img src="${row.image_url || '../assets/img/logo.png'}" alt="${row.name}" style="width:36px;height:36px;object-fit:contain;background:rgba(255,255,255,.05);border-radius:6px;padding:4px;border:1px solid var(--border-light)" onerror="this.src='../assets/img/logo.png'">
               <div>
-                <div style="font-weight:500;color:var(--text-primary)">${p.name}</div>
-                <div style="font-size:11px;color:var(--text-muted)">${p.sku}</div>
+                <div style="font-weight:500;color:var(--text-primary)">${row.name}</div>
+                <div style="font-size:11px;color:var(--text-muted)">${row.sku}</div>
               </div>
             </div>
           </td>
-          <td><span class="badge ${CAT_BADGE[p.category] || 'badge-gray'}">${cat}</span></td>
-          <td style="font-weight:600;color:var(--text-primary)">R$ ${p.price.toFixed(2).replace('.',',')}</td>
+          <td><span class="badge ${catBadgeClass(row.category_id)}">${catName}</span></td>
+          <td style="font-weight:600;color:var(--text-primary)">${window.App.Fmt.currency(row.price)}</td>
           <td>
             <div class="stock-level">
-              <div class="stock-bar"><div class="stock-fill ${st.bar}" style="width:${st.pct}%"></div></div>
-              <span class="stock-count">${p.stock} un.</span>
+              <div class="stock-bar"><div class="stock-fill ${st.bar}" style="width:${pct}%"></div></div>
+              <span class="stock-count">${row.quantity} un.</span>
             </div>
           </td>
           <td><span class="badge ${st.cls}"><span class="badge-dot"></span>${st.label}</span></td>
-          <td style="color:var(--text-muted);font-size:var(--text-xs)">${p.updated}</td>
+          <td style="color:var(--text-muted);font-size:var(--text-xs)">${updated}</td>
           <td>
             <div class="table-actions">
-              <button class="btn btn-ghost btn-icon-sm" data-tooltip="Editar" onclick="editProduct(${p.id})"><i class="fas fa-pen"></i></button>
-              <button class="btn btn-ghost btn-icon-sm" data-tooltip="Excluir" style="color:var(--error)" onclick="deleteProduct(${p.id})"><i class="fas fa-trash"></i></button>
+              <button class="btn btn-ghost btn-icon-sm" data-tooltip="Diminuir 1" onclick="adjustStock(${row.product_id}, ${row.quantity}, -1)"><i class="fas fa-minus"></i></button>
+              <button class="btn btn-ghost btn-icon-sm" data-tooltip="Aumentar 1" onclick="adjustStock(${row.product_id}, ${row.quantity}, 1)"><i class="fas fa-plus"></i></button>
+              <button class="btn btn-ghost btn-icon-sm" data-tooltip="Editar" onclick="editProduct(${row.product_id})"><i class="fas fa-pen"></i></button>
+              <button class="btn btn-ghost btn-icon-sm" data-tooltip="Excluir" style="color:var(--error)" onclick="deleteProduct(${row.product_id}, '${row.name.replace(/'/g, "\\'")}')"><i class="fas fa-trash"></i></button>
             </div>
           </td>
         </tr>`;
     }).join('');
   }
 
-  /* info e paginação */
-  const endIdx = Math.min(start + state.perPage, total);
+  const start = currentTotal === 0 ? 0 : (state.page - 1) * state.perPage + 1;
+  const end   = Math.min(state.page * state.perPage, currentTotal);
   document.getElementById('paginationInfo').textContent =
-    total === 0
-      ? 'Nenhum produto encontrado'
-      : `Mostrando ${start + 1}–${endIdx} de ${total} produto${total !== 1 ? 's' : ''}`;
+    currentTotal === 0 ? 'Nenhum produto encontrado' : `Mostrando ${start}–${end} de ${currentTotal} produto${currentTotal !== 1 ? 's' : ''}`;
 
   renderPagination(pages);
-  updateStats();
+  fetchSummary();
 }
 
-/* ── Renderizar controles de paginação ── */
 function renderPagination(pages) {
   const ctrl = document.getElementById('paginationControls');
   if (!ctrl) return;
 
-  // Gera janela de páginas: prev, [1 ... p-1 p p+1 ... N], next
   let btns = '';
-
   const prev = state.page > 1;
   const next = state.page < pages;
 
-  btns += `<button class="page-btn" ${!prev ? 'disabled' : ''} onclick="goPage(${state.page - 1})">
-    <i class="fas fa-chevron-left"></i></button>`;
+  btns += `<button class="page-btn" ${!prev ? 'disabled' : ''} onclick="goPage(${state.page - 1})"><i class="fas fa-chevron-left"></i></button>`;
 
-  // Páginas visíveis
   const visible = getPageRange(state.page, pages);
   let lastWas = 0;
   visible.forEach(n => {
@@ -163,9 +183,7 @@ function renderPagination(pages) {
     lastWas = n;
   });
 
-  btns += `<button class="page-btn" ${!next ? 'disabled' : ''} onclick="goPage(${state.page + 1})">
-    <i class="fas fa-chevron-right"></i></button>`;
-
+  btns += `<button class="page-btn" ${!next ? 'disabled' : ''} onclick="goPage(${state.page + 1})"><i class="fas fa-chevron-right"></i></button>`;
   ctrl.innerHTML = btns;
 }
 
@@ -177,84 +195,122 @@ function getPageRange(current, total) {
   return [...pages].sort((a, b) => a - b);
 }
 
-/* ── Atualizar cards de resumo ── */
-function updateStats() {
-  const em     = ESTOQUE.filter(p => getStatus(p.stock).key === 'estoque').length;
-  const baixo  = ESTOQUE.filter(p => getStatus(p.stock).key === 'baixo').length;
-  const critico= ESTOQUE.filter(p => getStatus(p.stock).key === 'critico').length;
-  const els = document.querySelectorAll('.stat-value');
-  if (els[0]) els[0].textContent = ESTOQUE.length;
-  if (els[1]) els[1].textContent = em;
-  if (els[2]) els[2].textContent = baixo;
-  if (els[3]) els[3].textContent = critico;
-}
-
-/* ── Navegar para página ── */
 function goPage(n) {
   state.page = n;
   render();
   document.querySelector('.card').scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
-/* ── Editar produto ── */
-function editProduct(id) {
-  const p = ESTOQUE.find(x => x.id === id);
-  if (!p) return;
-  window.App.Toast.info('Em breve', `Edição de "${p.name}" disponível após integração com API.`);
+/* ── Ajuste rápido +/- direto na tabela (PUT /api/stock/:productId, valor absoluto) ── */
+async function adjustStock(productId, currentQty, delta) {
+  const newQty = currentQty + delta;
+  if (newQty < 0) return;
+  try {
+    await window.App.apiFetch(`/stock/${productId}`, {
+      method: 'PUT',
+      body: JSON.stringify({ quantity: newQty })
+    });
+    render();
+  } catch (err) {
+    window.App.Toast.error('Erro ao ajustar estoque', err.message);
+  }
 }
 
-/* ── Excluir produto ── */
-function deleteProduct(id) {
-  const p = ESTOQUE.find(x => x.id === id);
-  if (!p) return;
-  if (!confirm(`Excluir "${p.name}"?`)) return;
-  const idx = ESTOQUE.findIndex(x => x.id === id);
-  if (idx > -1) ESTOQUE.splice(idx, 1);
-  render();
-  window.App.Toast.success('Produto excluído', `"${p.name}" foi removido do estoque.`);
+/* ── Criar / Editar produto ── */
+function openCreateModal() {
+  document.getElementById('addProductForm').reset();
+  document.getElementById('productId').value = '';
+  document.getElementById('productModalTitle').textContent = 'Adicionar Produto';
+  window.App.Modal.open('addProductModal');
+}
+
+async function editProduct(id) {
+  try {
+    const product = await window.App.apiFetch(`/products/${id}`);
+    if (!product) return;
+    document.getElementById('productId').value = product.id;
+    document.getElementById('productName').value = product.name;
+    document.getElementById('productPrice').value = product.price;
+    document.getElementById('productQuantity').value = product.stock_quantity;
+    document.getElementById('productCategory').value = product.category_id || '';
+    document.getElementById('productSku').value = product.sku;
+    document.getElementById('productModalTitle').textContent = 'Editar Produto';
+    window.App.Modal.open('addProductModal');
+  } catch (err) {
+    window.App.Toast.error('Erro ao carregar produto', err.message);
+  }
+}
+
+async function deleteProduct(id, name) {
+  if (!confirm(`Excluir "${name}"?`)) return;
+  try {
+    await window.App.apiFetch(`/products/${id}`, { method: 'DELETE' });
+    window.App.Toast.success('Produto excluído', `"${name}" foi removido do estoque.`);
+    render();
+  } catch (err) {
+    window.App.Toast.error('Erro ao excluir produto', err.message);
+  }
 }
 
 /* ── Init ── */
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
   if (window.App) window.App.requireAuth();
 
-  /* busca */
-  document.getElementById('estoqueSearch')?.addEventListener('input', window.App.debounce(e => {
-    state.query = e.target.value.toLowerCase().trim();
-    state.page  = 1;
-    render();
-  }, 250));
+  await loadCategories();
+  render();
 
-  /* filtro status */
+  document.getElementById('estoqueSearch')?.addEventListener('input', window.App.debounce(e => {
+    state.query = e.target.value.trim();
+    state.page = 1;
+    render();
+  }, 300));
+
   document.getElementById('filterStatus')?.addEventListener('change', e => {
     state.status = e.target.value;
-    state.page   = 1;
+    state.page = 1;
     render();
   });
 
-  /* filtro categoria */
   document.getElementById('filterCategory')?.addEventListener('change', e => {
-    state.category = e.target.value;
-    state.page     = 1;
+    state.categoryId = e.target.value;
+    state.page = 1;
     render();
   });
 
-  /* adicionar produto */
-  document.getElementById('addProductBtn')?.addEventListener('click', () => {
-    window.App.Modal.open('addProductModal');
-  });
+  document.getElementById('addProductBtn')?.addEventListener('click', openCreateModal);
 
-  document.getElementById('addProductForm')?.addEventListener('submit', e => {
+  document.getElementById('addProductForm')?.addEventListener('submit', async e => {
     e.preventDefault();
-    window.App.Toast.success('Produto adicionado!', 'O produto foi cadastrado no estoque.');
-    window.App.Modal.close('addProductModal');
-    e.target.reset();
-  });
 
-  render();
+    const id = document.getElementById('productId').value;
+    const payload = {
+      name: document.getElementById('productName').value.trim(),
+      price: parseFloat(document.getElementById('productPrice').value),
+      sku: document.getElementById('productSku').value.trim(),
+      categoryId: document.getElementById('productCategory').value || undefined,
+    };
+
+    try {
+      if (id) {
+        await window.App.apiFetch(`/products/${id}`, { method: 'PUT', body: JSON.stringify(payload) });
+        const newQty = parseInt(document.getElementById('productQuantity').value, 10);
+        await window.App.apiFetch(`/stock/${id}`, { method: 'PUT', body: JSON.stringify({ quantity: newQty }) });
+        window.App.Toast.success('Produto atualizado!');
+      } else {
+        payload.initialQuantity = parseInt(document.getElementById('productQuantity').value, 10) || 0;
+        await window.App.apiFetch('/products', { method: 'POST', body: JSON.stringify(payload) });
+        window.App.Toast.success('Produto adicionado!', 'O produto foi cadastrado no estoque.');
+      }
+      window.App.Modal.close('addProductModal');
+      e.target.reset();
+      render();
+    } catch (err) {
+      window.App.Toast.error('Erro ao salvar produto', err.message);
+    }
+  });
 });
 
-/* ── Pedidos / Usuários / Perfil mantidos abaixo ── */
+/* ── Pedidos / Usuários / Perfil mantidos como estavam (fora do escopo desta integração) ── */
 
 function initPedidos() {
   document.getElementById('pedidosSearch')?.addEventListener('input', window.App.debounce(e => {

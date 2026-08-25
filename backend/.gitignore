@@ -1,0 +1,55 @@
+# Dependências
+node_modules/
+
+# Variáveis de ambiente
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env.*.local
+
+# Permitir arquivo de exemplo
+!.env.example
+
+# Logs
+*.log
+logs/
+
+# Build
+dist/
+build/
+coverage/
+
+# Cache
+.cache/
+.eslintcache
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# VS Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+
+# IntelliJ / JetBrains
+.idea/
+*.iml
+
+# Arquivos temporários
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# Banco local
+*.sqlite
+*.sqlite3
+*.db
+
+# Backups
+*.bak
+*.backup
