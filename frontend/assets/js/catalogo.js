@@ -15,13 +15,13 @@ const PRODUCTS = [
   { id:7,  name:'Nebacetin Pomada 15g',        category:'Pomadas',     price:18.50,  stock:34,  img:'../assets/img/nebacetin.png',      badge:'yellow' },
   { id:8,  name:'Vitamina C 1000mg',           category:'Vitaminas',   price:29.90,  stock:95,  img:'../assets/img/vitamina-c.png',     badge:'green'  },
   { id:9,  name:'Vitamina D 2000UI',           category:'Vitaminas',   price:34.90,  stock:78,  img:'../assets/img/vitamina-d.png',     badge:'green'  },
-  { id:10, name:'1 Million Parfum 100ml',      category:'Perfumaria',  price:289.90, stock:8,   img:'../assets/img/Perfumes/1million.jpg',       badge:'red'    },
-  { id:11, name:'212 VIP Black EDP',           category:'Perfumaria',  price:319.90, stock:15,  img:'../assets/img/Perfumes/212vip.webp',        badge:'yellow' },
-  { id:12, name:'Malbec Blue 100ml',           category:'Perfumaria',  price:129.90, stock:42,  img:'../assets/img/Perfumes/malbec-blue.jpeg',   badge:'green'  },
-  { id:13, name:'Perfume Floral Feminino',     category:'Perfumaria',  price:159.90, stock:27,  img:'../assets/img/Perfumes/floral-fem.jpeg',    badge:'green'  },
-  { id:14, name:'Wepink Golden EDP',           category:'Perfumaria',  price:99.90,  stock:3,   img:'../assets/img/Perfumes/wepink-golden.webp', badge:'red'    },
-  { id:15, name:'Wepink Lauv Green',           category:'Perfumaria',  price:89.90,  stock:51,  img:'../assets/img/Perfumes/wepink-green.webp',  badge:'green'  },
-  { id:16, name:'Wepink Red Passion',          category:'Perfumaria',  price:94.90,  stock:18,  img:'../assets/img/Perfumes/wepink-red.webp',    badge:'yellow' },
+  { id:10, name:'1 Million Parfum 100ml',      category:'Perfumaria',  price:289.90, stock:8,   img:'../assets/img/Perfumes/1 Million Parfum 100ml.png',       badge:'red'    },
+  { id:11, name:'212 VIP Black EDP',           category:'Perfumaria',  price:319.90, stock:15,  img:'../assets/img/Perfumes/212vip.png',        badge:'yellow' },
+  { id:12, name:'Malbec Blue 100ml',           category:'Perfumaria',  price:129.90, stock:42,  img:'../assets/img/Perfumes/malbec-blue.png',   badge:'green'  },
+  { id:13, name:'Perfume Floral Feminino',     category:'Perfumaria',  price:159.90, stock:27,  img:'../assets/img/Perfumes/floral-fem.png',    badge:'green'  },
+  { id:14, name:'Wepink Golden EDP',           category:'Perfumaria',  price:99.90,  stock:3,   img:'../assets/img/Perfumes/wepink-golden.png', badge:'red'    },
+  { id:15, name:'Wepink Lauv Green',           category:'Perfumaria',  price:89.90,  stock:51,  img:'../assets/img/Perfumes/wepink-green.png',  badge:'green'  },
+  { id:16, name:'Wepink Red Passion',          category:'Perfumaria',  price:94.90,  stock:18,  img:'../assets/img/Perfumes/wepink-red.png',    badge:'yellow' },
 ];
 
 const BADGE_LABELS  = { green:'Em estoque', yellow:'Estoque baixo', red:'Últimas unidades' };
