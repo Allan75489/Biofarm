@@ -5,7 +5,7 @@
 'use strict';
 
 // ── API Config (ajuste para sua API Flask) ──
-const API_BASE = 'http://localhost:5000/api';
+const API_BASE = 'https://biofarm.onrender.com/api';
 
 // ── Auth helpers ──
 const Auth = {
