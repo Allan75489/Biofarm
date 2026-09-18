@@ -4,7 +4,9 @@
 
 'use strict';
 
-// ── API Config (ajuste para sua API Flask) ──
+// ── API Config ──
+// Prefixo real das rotas da API (ver backend/src/app.js: app.use('/api', routes)).
+// O endpoint /health é separado e serve apenas para health check, NÃO faz parte do prefixo da API.
 const API_BASE = 'https://biofarm.onrender.com/api';
 
 // ── Auth helpers ──
